@@ -3,7 +3,6 @@ package Model;
 import java.util.LinkedHashMap;
 
 public class Inventory {
-   // private LinkedHashMap<String, ArtWork> inventoryArtWorkList;
     private String inventoryName;
     private String inventoryAddress;
 
@@ -11,18 +10,6 @@ public class Inventory {
         this.inventoryName = inventoryName;
         this.inventoryAddress = inventoryAddress;
     }
-
-   /* public LinkedHashMap<String, ArtWork> getInventoryArtWorkList() {
-        return inventoryArtWorkList;
-    }
-
-    */
-
-    /*public void setInventoryArtWorkList(LinkedHashMap<String, ArtWork> inventoryArtWorkList) {
-        this.inventoryArtWorkList = inventoryArtWorkList;
-    }
-
-     */
 
     public String getInventoryName() {
         return inventoryName;
