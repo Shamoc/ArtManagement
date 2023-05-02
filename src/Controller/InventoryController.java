@@ -10,10 +10,9 @@ public class InventoryController {
     private LinkedHashMap<String, Inventory> inventoryList;
     private static InventoryController inventoryListInstance = null;
 
-
     private InventoryController(){
         this.inventoryList = new LinkedHashMap<>();
-        Inventory defaultInventory = new Inventory("Inventory 1","Bodega");
+        Inventory defaultInventory = new Inventory("inventory1","Bodega");
         getInventoryList().put(defaultInventory.getInventoryName(), defaultInventory);
     }
 
@@ -31,10 +30,10 @@ public class InventoryController {
         ArtWork artWork = artworkControllerInstance.getArtworkList().get(artworkName);
         System.out.println("New Inventory Location: ");
         String artworkLocation = scanner.next();
+
+        //Crear flow si existe setearlo si no crearlo.
         Inventory inventory = inventoryList.get(artworkLocation);
         artWork.setInventoryLocation(inventory);
-
-        System.out.println(artWork.getInventoryLocation().getInventoryName());
 
     }
 

@@ -29,8 +29,8 @@ public class ArtworkController {
         String artworkArtStyle = scanner.next();
 
 
-        ArtWork artWork = new ArtWork(artworkName,artworkDescription,artworkAuthor,artworkAdquisitionYear,artworkArtStyle,inventoryInstance.getInventoryList().get("Inventory 1"));
-        this.artworkList.put(artWork.getName(),artWork);
+        ArtWork artWork = new ArtWork(artworkName, artworkDescription, artworkAuthor, artworkAdquisitionYear, artworkArtStyle, inventoryInstance.getInventoryList().get("inventory1"));
+        this.artworkList.put(artWork.getName(), artWork);
     }
 
     public void deleteArtwork(){
