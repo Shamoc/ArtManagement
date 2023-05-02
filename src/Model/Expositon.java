@@ -1,25 +1,15 @@
 package Model;
 
-import java.util.LinkedHashMap;
-
 public class Expositon {
 
-    private LinkedHashMap<String, ArtWork> expoArtWorkList;
     private String expoName;
     private String expoDescription;
+    private Boolean expoStatus;
 
-    public Expositon(LinkedHashMap<String, ArtWork> expoArtWorkList, String expoName, String expoDescription) {
-        this.expoArtWorkList = expoArtWorkList;
+    public Expositon(String expoName, String expoDescription, Boolean expoStatus) {
         this.expoName = expoName;
         this.expoDescription = expoDescription;
-    }
-
-    public LinkedHashMap<String, ArtWork> getExpoArtWorkList() {
-        return expoArtWorkList;
-    }
-
-    public void setExpoArtWorkList(LinkedHashMap<String, ArtWork> expoArtWorkList) {
-        this.expoArtWorkList = expoArtWorkList;
+        this.setExpoStatus(expoStatus);
     }
 
     public String getExpoName() {
@@ -36,5 +26,13 @@ public class Expositon {
 
     public void setExpoDescription(String expoDescription) {
         this.expoDescription = expoDescription;
+    }
+
+    public Boolean getExpoStatus() {
+        return expoStatus;
+    }
+
+    public void setExpoStatus(Boolean expoStatus) {
+        this.expoStatus = expoStatus;
     }
 }

@@ -6,9 +6,38 @@ import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 public class InventoryController {
-    private LinkedHashMap<String, Inventory> inventoryList;
 
+    private LinkedHashMap<String, Inventory> inventoryList;
     private static InventoryController inventoryListInstance = null;
+
+
+    private InventoryController(){
+        this.inventoryList = new LinkedHashMap<>();
+        Inventory defaultInventory = new Inventory("Inventory 1","Bodega");
+        getInventoryList().put(defaultInventory.getInventoryName(), defaultInventory);
+    }
+
+    public void setDefaultInventory(){
+        //Duda si ponerlo en el constructor o dejarlo aqui.
+        Inventory defaultInventory = new Inventory("Inventory 1","Bodega");
+        getInventoryList().put(defaultInventory.getInventoryName(), defaultInventory);
+    }
+
+    public void setArtworkInventory(){
+        ArtworkController artworkControllerInstance = ArtworkController.getInstance();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Artwork name: ");
+        String artworkName = scanner.next();
+        ArtWork artWork = artworkControllerInstance.getArtworkList().get(artworkName);
+        System.out.println("New Inventory Location: ");
+        String artworkLocation = scanner.next();
+        Inventory inventory = inventoryList.get(artworkLocation);
+        artWork.setInventoryLocation(inventory);
+
+        System.out.println(artWork.getInventoryLocation().getInventoryName());
+
+    }
+
     public void createInventory(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Inventory name: ");
@@ -17,7 +46,7 @@ public class InventoryController {
         String inventoryAddress = scanner.next();
 
         Inventory inventory = new Inventory(inventoryName,inventoryAddress);
-        inventoryList.put(inventoryName, inventory);
+        getInventoryList().put(inventoryName, inventory);
 
     }
 
@@ -25,12 +54,16 @@ public class InventoryController {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Inventory name to delete: ");
         String inventoryName = scanner.next();
-        inventoryList.remove(inventoryName);
+        getInventoryList().remove(inventoryName);
     }
     public static InventoryController getInstance() {
         if (inventoryListInstance == null) {
             inventoryListInstance = new InventoryController();
         }
         return inventoryListInstance;
+    }
+
+    public LinkedHashMap<String, Inventory> getInventoryList() {
+        return inventoryList;
     }
 }

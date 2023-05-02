@@ -8,12 +8,13 @@ public class ArtWork {
     private String artStyle;
     private Inventory inventoryLocation;
 
-    public ArtWork(String name, String description, String author, int adquisitionYear, String artStyle) {
+    public ArtWork(String name, String description, String author, int adquisitionYear, String artStyle,Inventory inventoryLocation) {
         this.setName(name);
         this.description = description;
         this.author = author;
         this.adquisitionYear = adquisitionYear;
         this.artStyle = artStyle;
+        this.inventoryLocation = inventoryLocation;
     }
 
 
@@ -55,5 +56,13 @@ public class ArtWork {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Inventory getInventoryLocation() {
+        return inventoryLocation;
+    }
+
+    public void setInventoryLocation(Inventory inventoryLocation) {
+        this.inventoryLocation = inventoryLocation;
     }
 }

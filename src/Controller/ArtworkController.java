@@ -2,9 +2,8 @@ package Controller;
 
 import Model.ArtWork;
 
-import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.Scanner;
 
 public class ArtworkController {
     private LinkedHashMap<String, ArtWork> artworkList;
@@ -12,20 +11,33 @@ public class ArtworkController {
     private static ArtworkController artworkListInstance = null;
 
     private ArtworkController (){
-
-       /* artworkList = new LinkedHashMap<>();
-        ArtWork monaLisa =new ArtWork("Mona Lisa","Mysterious painting of a woman", "Leonardo Da Vinci", 1948, "Realism");
-        ArtWork sunRise = new ArtWork("Sunrise","Painting of boats and a sunrise", "Claude Monet", 1950, "Impressionism");
-
-        this.artworkList.put("Mona Lisa", monaLisa);
-        this.artworkList.put("Sunrise", sunRise);
-
-        */
+        this.artworkList = new LinkedHashMap<>();
     }
 
-    public void createArtwork(ArtWork name){
-        String artName = name.getName();
-        artworkList.put(artName, name);
+    public void createArtwork(){
+        InventoryController inventoryInstance = InventoryController.getInstance();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Artwork name: ");
+        String artworkName = scanner.next();
+        System.out.println("Artwork Description: ");
+        String artworkDescription = scanner.next();
+        System.out.println("Artwork author: ");
+        String artworkAuthor = scanner.next();
+        System.out.println("Artwork adquisition year: ");
+        int artworkAdquisitionYear = scanner.nextInt();
+        System.out.println("Artwork artstyle: ");
+        String artworkArtStyle = scanner.next();
+
+
+        ArtWork artWork = new ArtWork(artworkName,artworkDescription,artworkAuthor,artworkAdquisitionYear,artworkArtStyle,inventoryInstance.getInventoryList().get("Inventory 1"));
+        this.artworkList.put(artWork.getName(),artWork);
+    }
+
+    public void deleteArtwork(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Artwork name to delete: ");
+        String inventoryName = scanner.next();
+        getArtworkList().remove(inventoryName);
     }
 
     public static ArtworkController getInstance() {
@@ -33,5 +45,9 @@ public class ArtworkController {
             artworkListInstance = new ArtworkController();
         }
         return artworkListInstance;
+    }
+
+    public LinkedHashMap<String, ArtWork> getArtworkList() {
+        return artworkList;
     }
 }
