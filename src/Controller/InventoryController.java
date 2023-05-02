@@ -12,13 +12,7 @@ public class InventoryController {
 
     private InventoryController(){
         this.inventoryList = new LinkedHashMap<>();
-        Inventory defaultInventory = new Inventory("inventory1","Bodega");
-        getInventoryList().put(defaultInventory.getInventoryName(), defaultInventory);
-    }
-
-    public void setDefaultInventory(){
-        //Duda si ponerlo en el constructor o dejarlo aqui.
-        Inventory defaultInventory = new Inventory("Inventory 1","Bodega");
+        Inventory defaultInventory = new Inventory("inventory1", "Bodega");
         getInventoryList().put(defaultInventory.getInventoryName(), defaultInventory);
     }
 
@@ -44,7 +38,7 @@ public class InventoryController {
         System.out.println("Inventory Address: ");
         String inventoryAddress = scanner.next();
 
-        Inventory inventory = new Inventory(inventoryName,inventoryAddress);
+        Inventory inventory = new Inventory(inventoryName, inventoryAddress);
         getInventoryList().put(inventoryName, inventory);
 
     }

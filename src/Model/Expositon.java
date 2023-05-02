@@ -4,9 +4,9 @@ public class Expositon {
 
     private String expoName;
     private String expoDescription;
-    private Boolean expoStatus;
+    private boolean expoStatus;
 
-    public Expositon(String expoName, String expoDescription, Boolean expoStatus) {
+    public Expositon(String expoName, String expoDescription, boolean expoStatus) {
         this.expoName = expoName;
         this.expoDescription = expoDescription;
         this.setExpoStatus(expoStatus);
