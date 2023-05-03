@@ -25,10 +25,12 @@ public class InventoryController {
         System.out.println("New Inventory Location: ");
         String artworkLocation = scanner.next();
 
-        //Crear flow si existe setearlo si no crearlo.
-        Inventory inventory = inventoryList.get(artworkLocation);
-        artWork.setInventoryLocation(inventory);
-
+        //No funciona, porque?
+        try {
+            artWork.setInventoryLocation(artworkLocation);
+        } catch (NullPointerException noInventoryException){
+            System.out.println("Inventory not found \n Create Inventory");
+        }
     }
 
     public void createInventory(){

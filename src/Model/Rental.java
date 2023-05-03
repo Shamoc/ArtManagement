@@ -6,10 +6,8 @@ public class Rental {
     private double rentalPrice;
     private String rentalStatus;
 
-    public Rental(String rentalInstitution, double rentalPrice, String rentalStatus) {
+    public Rental(String rentalInstitution) {
         this.rentalInstitution = rentalInstitution;
-        this.rentalPrice = rentalPrice;
-        this.rentalStatus = rentalStatus;
     }
 
     public String getRentalInstitution() {

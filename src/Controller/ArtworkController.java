@@ -29,7 +29,7 @@ public class ArtworkController {
         String artworkArtStyle = scanner.next();
 
 
-        ArtWork artWork = new ArtWork(artworkName, artworkDescription, artworkAuthor, artworkAdquisitionYear, artworkArtStyle, inventoryInstance.getInventoryList().get("inventory1"));
+        ArtWork artWork = new ArtWork(artworkName, artworkDescription, artworkAuthor, artworkAdquisitionYear, artworkArtStyle, "Bodega");
         this.artworkList.put(artWork.getName(), artWork);
     }
 
