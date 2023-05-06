@@ -4,6 +4,7 @@ import Model.ArtWork;
 
 import java.util.LinkedHashMap;
 import java.util.Scanner;
+import java.util.Set;
 
 public class ArtworkController {
     private LinkedHashMap<String, ArtWork> artworkList;
@@ -35,6 +36,11 @@ public class ArtworkController {
 
     public void deleteArtwork(){
         Scanner scanner = new Scanner(System.in);
+        LinkedHashMap<String, ArtWork> artWorkList = artworkList;
+        Set<String> key = artWorkList.keySet();
+        for (String artworks : key) {
+            System.out.println(artworks);
+        }
         System.out.println("Artwork name to delete: ");
         String inventoryName = scanner.next();
         getArtworkList().remove(inventoryName);

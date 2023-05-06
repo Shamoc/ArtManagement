@@ -3,7 +3,7 @@ package Model;
 public class Rental {
 
     private String rentalInstitution;
-    private double rentalPrice;
+    private int rentalPrice;
     private String rentalStatus;
 
     public Rental(String rentalInstitution) {
@@ -22,7 +22,7 @@ public class Rental {
         return rentalPrice;
     }
 
-    public void setRentalPrice(double rentalPrice) {
+    public void setRentalPrice(int rentalPrice) {
         this.rentalPrice = rentalPrice;
     }
 
