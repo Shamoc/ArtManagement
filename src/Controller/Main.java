@@ -17,7 +17,7 @@ public class Main {
         while (!done) {
             System.out.println("Welcome to ArtCo. Your Art professional manager");
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Please select an option \n 1. Artwork \n 2. Inventory \n 3. Institutions \n 4. Expositions \n 5. Exit");
+            System.out.println("Please select an option \n 1. Artwork \n 2. Inventory \n 3. Rentals \n 4. Expositions \n 5. Exit");
             int usernum = scanner.nextInt();
             switch (usernum) {
                 case 1:
@@ -33,7 +33,7 @@ public class Main {
                     expoMenu();
                     break;
                 case 5:
-                    done = true;
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("That is not a valid option");
@@ -45,16 +45,19 @@ public class Main {
         while (!done) {
             ArtworkController artInstance = ArtworkController.getInstance();
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Artwork Options: \n 1. Add Artwork \n 2. Delete Artwork \n 3. Go back");
+            System.out.println("Artwork Options: \n 1. Artwork details \n 2. Add Artwork \n 3. Delete Artwork \n 4. Go back");
             int usrartnum = scanner.nextInt();
             switch (usrartnum) {
                 case 1:
-                    artInstance.createArtwork();
+                    artInstance.artworkDetails();
                     break;
                 case 2:
-                    artInstance.deleteArtwork();
+                    artInstance.createArtwork();
                     break;
                 case 3:
+                    artInstance.deleteArtwork();
+                    break;
+                case 4:
                     mainMenu();
                 default:
                     System.out.println("That is not a valid option");
@@ -66,17 +69,25 @@ public class Main {
         while (!done) {
             InventoryController invInstance = InventoryController.getInstance();
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Inventory Options: \n 1. Add Inventory \n 2. Delete Inventory \n 3. Go back");
+            System.out.println("Inventory Options: \n 1. Check Inventory Address \n Send Artwork to Inventory \n 3. Add Inventory " +
+                                "\n 4. Delete Inventory \n 5. Go back");
             int usrartnum = scanner.nextInt();
             switch (usrartnum) {
                 case 1:
-                    invInstance.createInventory();
+                    invInstance.checkInventoryAddress();
                     break;
                 case 2:
-                    invInstance.deleteInventory();
+                    invInstance.setArtworkInventory();
                     break;
                 case 3:
+                    invInstance.createInventory();
+                    break;
+                case 4:
+                    invInstance.deleteInventory();
+                    break;
+                case 5:
                     mainMenu();
+                    break;
                 default:
                     System.out.println("That is not a valid option");
             }
@@ -87,31 +98,28 @@ public class Main {
         while (!done) {
             RentalController rentInstance = RentalController.getInstance();
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Institutions Options: \n 1. Add Institute \n 2. Delete Institute \n 3. Check rental status");
+            System.out.println("Rental Options: \n 1. Check Rental Status \n 2. Set Artwork for Rental \n 3.Pay Rental" +
+                    "\n 4. Add Institute \n 5. Delete Institute \n 6. Go back");
             int usrartnum = scanner.nextInt();
             switch (usrartnum) {
                 case 1:
-                    rentInstance.createInstitute();
+                    rentInstance.checkRentalStatus();
                     break;
                 case 2:
-                    rentInstance.deleteInstitute();
+                    rentInstance.setArtworkForRental();
                     break;
                 case 3:
-                    ArtworkController artInstance =ArtworkController.getInstance();
-                    System.out.println("Please select artwork: ");
-                    LinkedHashMap<String, ArtWork> artWorkList = artInstance.getArtworkList();
-                    Set<String> key = artWorkList.keySet();
-                    for (String artworks : key) {
-                        System.out.println(artworks);
-                    }
-                    String selectedart = scanner.next();
-                    ArtWork artWork = artWorkList.get(selectedart);
-                    if (rentInstance.checkRentalStatus(artWork)){
-                        rentInstance.getInstituteList().get().getRentalStatus();
-                    }
-
-
-
+                    rentInstance.rentalChangeStatus();
+                    break;
+                case 4:
+                    rentInstance.createInstitute();
+                    break;
+                case 5:
+                    rentInstance.deleteInstitute();
+                    break;
+                case 6:
+                    mainMenu();
+                    break;
                 default:
                     System.out.println("That is not a valid option");
             }
@@ -122,17 +130,21 @@ public class Main {
         while (!done) {
             ExpositionController expoInstance = ExpositionController.getInstance();
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Exposition Options: \n 1. Add Exposition \n 2. Delete Exposition \n 3. Go back");
+            System.out.println("Exposition Options: \n 1. Create Exposition \n 2. Add Artwork to Exposition \n 3. Delete Exposition \n 4. Go back");
             int usrartnum = scanner.nextInt();
             switch (usrartnum) {
                 case 1:
                     expoInstance.createExpo();
                     break;
                 case 2:
-                    expoInstance.deleteExpo();
+                    expoInstance.setArtworkExposition();
                     break;
                 case 3:
+                    expoInstance.deleteExpo();
+                    break;
+                case 4:
                     mainMenu();
+                    break;
                 default:
                     System.out.println("That is not a valid option");
             }

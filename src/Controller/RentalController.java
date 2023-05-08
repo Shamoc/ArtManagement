@@ -22,49 +22,69 @@ public class RentalController {
         ArtworkController artworkControllerInstance = ArtworkController.getInstance();
         ExpositionController expositionControllerInstance = ExpositionController.getInstance();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Artwork for rental: ");
-        String artworkName = scanner.next();
-        ArtWork artWork = artworkControllerInstance.getArtworkList().get(artworkName);
-        System.out.println("Set Institute that will be renting");
-        String artworkLocation = scanner.next();
-        if (!instituteList.containsKey(artworkLocation)){
-            boolean done = false;
-            while (!done) {
-                System.out.println("Institute not found \n 1. Create Institute? \n 2. Exit");
-                int option = scanner.nextInt();
-                switch (option) {
-                    case 1:
-                        createInstitute();
-                        setArtworkForRental();
+        LinkedHashMap<String, ArtWork> artworkList = artworkControllerInstance.getArtworkList();
+        if (!artworkList.isEmpty()) {
+            Set<String> key = artworkList.keySet();
+            int index = 1;
+            for (String artworks : key) {
+                System.out.println(index + ". " + artworks);
+                index++;
+            }
+            System.out.println("Select Artwork: ");
+            String artworkName = scanner.next();
+            ArtWork artWork = artworkControllerInstance.getArtworkList().get(artworkName);
+            System.out.println("Select Institute: ");
+            LinkedHashMap<String, Rental> invList = instituteList;
+            if(!instituteList.isEmpty()) {
+                System.out.println("List of Institutes: ");
+                Set<String> instkey = invList.keySet();
+                index = 1;
+                for (String artworks : instkey) {
+                    System.out.println(index + ". " + artworks);
+                }
+                String artworkLocation = scanner.next();
+                if (!instituteList.containsKey(artworkLocation)) {
+                    boolean done = false;
+                    while (!done) {
+                        System.out.println("Institute not found \n 1. Create Institute? \n 2. Exit");
+                        int option = scanner.nextInt();
+                        switch (option) {
+                            case 1:
+                                createInstitute();
+                                setArtworkForRental();
+                                done = true;
+                                break;
+                            case 2:
+                                Main.rentMenu();
+                                break;
+                            default:
+                                System.out.println("That is not a valid option");
+                        }
+                    }
+                } else if (expositionControllerInstance.getExpoList().containsKey(artWork.getInventoryLocation())) {
+                    System.out.println(artworkName + " is not available for rental \n Location: " + artWork.getInventoryLocation());
+                } else {
+                    artWork.setInventoryLocation(artworkLocation);
+                    System.out.println(artworkName + " will be rented by " + artWork.getInventoryLocation());
+                }
+
+                boolean done = false;
+                while (!done) {
+                    System.out.println("Set rent price. (No cents)");
+                    int artRentPrice = scanner.nextInt();
+                    if (artRentPrice > 0) {
+                        instituteList.get(artWork.getInventoryLocation()).setRentalPrice(artRentPrice);
+                        instituteList.get(artWork.getInventoryLocation()).setRentalStatus("Unpaid");
                         done = true;
-                        break;
-                    case 2: Main.rentMenu();
-                        break;
-                    default:
-                        System.out.println("That is not a valid option");
+                    } else {
+                        System.out.println("Error price can not be 0 or lower. \n Try again. ");
+                    }
                 }
             }
-        } else if (expositionControllerInstance.getExpoList().containsKey(artWork.getInventoryLocation())){
-            System.out.println(artworkName + " is not available for rental \n Location: " + artWork.getInventoryLocation());
-        } else {
-            artWork.setInventoryLocation(artworkLocation);
-            System.out.println(artworkName + " will be rented by " + artWork.getInventoryLocation());
+            System.out.println("Institutions List is empty");
         }
-
-        boolean done = false;
-        while (!done) {
-            System.out.println("What is the rent price? No cents");
-            int artRentPrice = scanner.nextInt();
-            if (artRentPrice > 0) {
-                instituteList.get(artWork.getInventoryLocation()).setRentalPrice(artRentPrice);
-                instituteList.get(artWork.getInventoryLocation()).setRentalStatus("Unpaid");
-                done = true;
-            } else {
-                System.out.println("Error price can not be 0 or lower. \n Try again. ");
-            }
-        }
+        System.out.println("Artwork List is empty");
     }
-
     public boolean checkRentalStatus(ArtWork artWork) {
         String test = artWork.getInventoryLocation();
         if (!instituteList.containsKey(test)) {
@@ -76,15 +96,34 @@ public class RentalController {
         }
         return false;
     }
-
+    public void checkRentalStatus() {
+        Scanner scanner = new Scanner(System.in);
+        ArtworkController artInstance =ArtworkController.getInstance();
+        System.out.println("Please select artwork: ");
+        LinkedHashMap<String, ArtWork> artWorkList = artInstance.getArtworkList();
+        Set<String> key = artWorkList.keySet();
+        int index = 1;
+        for (String artworks : key) {
+            System.out.println(index + ". " + artworks);
+            index++;
+        }
+        String selectedart = scanner.next();
+        ArtWork artWork = artWorkList.get(selectedart);
+        if (checkRentalStatus(artWork)){
+           getInstituteList().get(artWork).getRentalStatus();
+        } else {
+            System.out.println("Artwork is not rented.");
+        }
+    }
     public void rentalChangeStatus() {
         ArtworkController artworkControllerInstance = ArtworkController.getInstance();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please select the Artwork: ");
         LinkedHashMap<String, ArtWork> artWorkList = artworkControllerInstance.getArtworkList();
         Set<String> key = artWorkList.keySet();
+        int index = 1;
         for (String artworks : key) {
-            System.out.println(artworks);
+            System.out.println(index + ". " + artworks);
         }
         String artworkName = scanner.next();
         String artworkLocation = artworkControllerInstance.getArtworkList().get(artworkName).getInventoryLocation();
@@ -157,15 +196,23 @@ public class RentalController {
     public void deleteInstitute() {
         Scanner scanner = new Scanner(System.in);
         LinkedHashMap<String, Rental> invList = instituteList;
-        Set<String> key = invList.keySet();
-        for (String institute : key) {
-            System.out.println(institute);
+        if(!instituteList.isEmpty()) {
+            System.out.println("List of Institutes: ");
+            Set<String> key = invList.keySet();
+            int index = 1;
+            for (String artworks : key) {
+                System.out.println(index + ". " + artworks);
+            }
+            System.out.println("Institute to delete: ");
+            String expoName = scanner.next();
+            if (instituteList.containsKey(expoName)) {
+                getInstituteList().remove(expoName);
+                System.out.println("Success! Institute " + expoName + " was deleted");
+            } else {
+                System.out.println("Institute not found");
+            }
         }
-        System.out.println("Rental Institute to delete: ");
-        String expoName = scanner.next();
-        getInstituteList().remove(expoName);
-
-        System.out.println("Success! Institute " + expoName + " was deleted");
+        System.out.println("Empty List");
     }
     public static RentalController getInstance() {
         if (instituteListInstance == null) {
