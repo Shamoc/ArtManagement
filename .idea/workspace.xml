@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4b80c5ef-9b46-474b-a863-f01f3f3b6efb" name="Changes" comment="Added Exception catchers to all controllers v2.">
+      <change afterPath="$PROJECT_DIR$/src/Utils/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ArtworkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ArtworkController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ExpositionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExpositionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/InventoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/InventoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/RentalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RentalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Rental.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Rental.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2OibUqYdvh5dqAeRhfRflIcwzOd" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Controller.Main" />
+      <module name="ArtManagement" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4b80c5ef-9b46-474b-a863-f01f3f3b6efb" name="Changes" comment="" />
+      <created>1682046371133</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1682046371133</updated>
+    </task>
+    <task id="LOCAL-00001" summary="init">
+      <created>1682046582811</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1682046582811</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Creation of packages">
+      <created>1682046775026</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1682046775026</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Creation of packages">
+      <created>1682047473617</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1682047473617</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Creation of packages">
+      <created>1682387592000</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1682387592000</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Abstraction of the model and creation of Artwork &amp; Inventory controllers (unfinished).">
+      <created>1682387738869</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1682387738869</updated>
+    </task>
+    <task id="LOCAL-00006" summary="ExpositionController and methods (incomplete) created. &#10;Additional methods added to ArtowrkController &amp; InventoryController.">
+      <created>1682990539135</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1682990539135</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Check setInventory and Create inventory flows.">
+      <created>1682992287466</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1682992287466</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Check setInventory and Create inventory flows.">
+      <created>1682992768846</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1682992768846</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Rental Controller and methods added.">
+      <created>1683079139238</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1683079139238</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Main menu created. Change status from Rental and Expo methods updated.">
+      <created>1683332121899</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1683332121899</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Main menu completed.&#10;All controllers method setting methods improved. &#10;&#10;Ready for QA.">
+      <created>1683566171151</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1683566171151</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Added Exception catchers to all controllers.">
+      <created>1683568523932</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1683568523932</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Added Exception catchers to all controllers v2.">
+      <created>1683568979654</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1683568979654</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Added Exception catchers to all controllers v2.">
+      <created>1683595537538</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1683595537538</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="init" />
+    <MESSAGE value="Creation of packages" />
+    <MESSAGE value="Abstraction of the model and creation of Artwork &amp; Inventory controllers (unfinished)." />
+    <MESSAGE value="ExpositionController and methods (incomplete) created. &#10;Additional methods added to ArtowrkController &amp; InventoryController." />
+    <MESSAGE value="Check setInventory and Create inventory flows." />
+    <MESSAGE value="Rental Controller and methods added." />
+    <MESSAGE value="Main menu created. Change status from Rental and Expo methods updated." />
+    <MESSAGE value="Main menu completed.&#10;All controllers method setting methods improved. &#10;&#10;Ready for QA." />
+    <MESSAGE value="Added Exception catchers to all controllers." />
+    <MESSAGE value="Added Exception catchers to all controllers v2." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Exception catchers to all controllers v2." />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="index" />
+        <watch expression="artInstance" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>
