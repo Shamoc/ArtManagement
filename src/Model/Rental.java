@@ -5,6 +5,7 @@ public class Rental {
     private String rentalInstitution;
     private int rentalPrice;
     private String rentalStatus;
+    private int pendingRental;
 
     public Rental(String rentalInstitution) {
         this.rentalInstitution = rentalInstitution;
@@ -18,7 +19,7 @@ public class Rental {
         this.rentalInstitution = rentalInstitution;
     }
 
-    public double getRentalPrice() {
+    public int getRentalPrice() {
         return rentalPrice;
     }
 
@@ -32,5 +33,13 @@ public class Rental {
 
     public void setRentalStatus(String rentalStatus) {
         this.rentalStatus = rentalStatus;
+    }
+
+    public int getPendingRental() {
+        return pendingRental;
+    }
+
+    public void setPendingRental(int pendingRental) {
+        this.pendingRental = pendingRental;
     }
 }

@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.ArtWork;
+import Utils.Utils;
 
 import java.util.LinkedHashMap;
 import java.util.Scanner;
@@ -11,10 +12,20 @@ public class ArtworkController {
 
     private static ArtworkController artworkListInstance = null;
 
+    /**
+     * Constructor method for ArtworkController class
+     *
+     * @see ArtWork
+     */
     private ArtworkController (){
         this.artworkList = new LinkedHashMap<>();
+        ArtWork artWork = new ArtWork("mona","lisa","leonardo da vinci", 1850,"renaissance","storage");
+        artworkList.put(artWork.getName(), artWork);
     }
 
+    /**
+     *Method to print all the details of an Artwork
+     */
     public void artworkDetails() {
         Scanner scanner = new Scanner(System.in);
         LinkedHashMap<String, ArtWork> artWorkList = artworkList;
@@ -27,18 +38,32 @@ public class ArtworkController {
             }
             System.out.println("Select Artwork: ");
             String artworkName = scanner.next();
-            ArtWork artwork = artworkList.get(artworkName);
-            System.out.println("Name: " + artwork.getName());
-            System.out.println("Description: " + artwork.getDescription());
-            System.out.println("Author: " + artwork.getAuthor());
-            System.out.println("Art style: " + artwork.getArtStyle());
-            System.out.println("Adquisition year: " + artwork.getAdquisitionYear());
+            if(!Utils.isNumeric(artworkName)) {
+                ArtWork artwork = artworkList.get(artworkName);
+                if(artwork != null) {
+                    System.out.println("Name: " + artwork.getName());
+                    System.out.println("Description: " + artwork.getDescription());
+                    System.out.println("Author: " + artwork.getAuthor());
+                    System.out.println("Art style: " + artwork.getArtStyle());
+                    System.out.println("Adquisition year: " + artwork.getAdquisitionYear());
+                } else {
+                    System.out.println("Artwork not found. Please input full name.");
+                    artworkDetails();
+                }
+            } else {
+                System.out.println("Provide the name. Please try again.");
+                artworkDetails();
+            }
+        } else {
+            System.out.println("Empty list");
         }
-        System.out.println("Empty list");
     }
 
+    /**
+     * Method for the creation of an Artwork Model and to be added to the artworkList.
+     * Default inventoryLocation for newly created Artwork is storage
+     */
     public void createArtwork(){
-        InventoryController inventoryInstance = InventoryController.getInstance();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Artwork name: ");
         String artworkName = scanner.next();
@@ -51,12 +76,19 @@ public class ArtworkController {
         System.out.println("Artwork art style: ");
         String artworkArtStyle = scanner.next();
 
-
-        ArtWork artWork = new ArtWork(artworkName, artworkDescription, artworkAuthor, artworkAdquisitionYear, artworkArtStyle, "Bodega");
-        this.artworkList.put(artWork.getName(), artWork);
-        System.out.println("Success! Artwork " + artWork.getName() + " created.");
+        if(!artworkList.containsKey(artworkName.toLowerCase())) {
+            ArtWork artWork = new ArtWork(artworkName.toLowerCase(), artworkDescription, artworkAuthor, artworkAdquisitionYear, artworkArtStyle, "storage");
+            this.artworkList.put(artWork.getName(), artWork);
+            System.out.println("Success! Artwork " + artWork.getName() + " created.");
+        } else {
+            System.out.println("Artwork name already in use. Try again");
+            createArtwork();
+        }
     }
 
+    /**
+     * Method for the removal of an Artwork from the artworkList
+     */
     public void deleteArtwork(){
         Scanner scanner = new Scanner(System.in);
         LinkedHashMap<String, ArtWork> artWorkList = artworkList;
@@ -69,16 +101,22 @@ public class ArtworkController {
             }
             System.out.println("Artwork name to delete: ");
             String inventoryName = scanner.next();
-            if (artworkList.containsKey(inventoryName)) {
-                getArtworkList().remove(inventoryName);
+            if (artworkList.containsKey(inventoryName.toLowerCase())) {
+                getArtworkList().remove(inventoryName.toLowerCase());
                 System.out.println("Success! Artwork " + inventoryName + " deleted.");
             } else {
                 System.out.println("Artwork not found");
             }
+        } else {
+            System.out.println("Empty List");
         }
-        System.out.println("Empty List");
     }
 
+    /**
+     *Singleton for ArtworkController
+     *
+     * @return The same ArtworkController Instance
+     */
     public static ArtworkController getInstance() {
         if (artworkListInstance == null) {
             artworkListInstance = new ArtworkController();
@@ -86,6 +124,11 @@ public class ArtworkController {
         return artworkListInstance;
     }
 
+    /**
+     *Method for the access of the artworkList
+     *
+     * @return artworkList
+     */
     public LinkedHashMap<String, ArtWork> getArtworkList() {
         return artworkList;
     }

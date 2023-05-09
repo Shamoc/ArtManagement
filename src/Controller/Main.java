@@ -1,17 +1,13 @@
 package Controller;
 
-import Model.ArtWork;
-
-import java.util.LinkedHashMap;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
-import java.util.Set;
 
 public class Main {
+/*
     public static void mainMenu() {
-        ArtworkController artInstance = ArtworkController.getInstance();
-        RentalController rentInstance = RentalController.getInstance();
-        ExpositionController expoInstance = ExpositionController.getInstance();
-        InventoryController invInstance = InventoryController.getInstance();
 
         boolean done = false;
         while (!done) {
@@ -69,7 +65,7 @@ public class Main {
         while (!done) {
             InventoryController invInstance = InventoryController.getInstance();
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Inventory Options: \n 1. Check Inventory Address \n Send Artwork to Inventory \n 3. Add Inventory " +
+            System.out.println("Inventory Options: \n 1. Check Inventory Address \n 2. Send Artwork to Inventory \n 3. Add Inventory " +
                                 "\n 4. Delete Inventory \n 5. Go back");
             int usrartnum = scanner.nextInt();
             switch (usrartnum) {
@@ -98,7 +94,7 @@ public class Main {
         while (!done) {
             RentalController rentInstance = RentalController.getInstance();
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Rental Options: \n 1. Check Rental Status \n 2. Set Artwork for Rental \n 3.Pay Rental" +
+            System.out.println("Rental Options: \n 1. Check Rental Status \n 2. Set Artwork for Rental \n 3. Pay Rental" +
                     "\n 4. Add Institute \n 5. Delete Institute \n 6. Go back");
             int usrartnum = scanner.nextInt();
             switch (usrartnum) {
@@ -151,6 +147,13 @@ public class Main {
         }
     }
     public static void main(String[] args) {
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("myfile.txt"));
+            bufferedWriter.write("queso");
+        } catch (IOException e){
+            System.out.println("su queso");
+        }
         mainMenu();
     }
+    */
 }
