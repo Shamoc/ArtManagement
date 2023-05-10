@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-        public static void mainMenu() {
+    /**
+     * Method for the Main Menu
+     */
+    public static void mainMenu() {
 
             boolean done = false;
             while (!done) {
@@ -38,7 +41,10 @@ public class Main {
                 }
             }
         }
-        public static void artworkMenu() {
+    /**
+     * Method for the Artwork Menu
+     */
+    public static void artworkMenu() {
             boolean done = false;
             while (!done) {
                 ArtworkController artInstance = ArtworkController.getInstance();
@@ -62,7 +68,10 @@ public class Main {
                 }
             }
         }
-        public static void invMenu() {
+    /**
+     * Method for the Inventory Menu
+     */
+    public static void invMenu() {
             boolean done = false;
             while (!done) {
                 InventoryController invInstance = InventoryController.getInstance();
@@ -94,7 +103,10 @@ public class Main {
                 }
             }
         }
-        public static void rentMenu() {
+    /**
+     * Method for the Rent Menu
+     */
+    public static void rentMenu() {
             boolean done = false;
             while (!done) {
                 RentalController rentInstance = RentalController.getInstance();
@@ -129,7 +141,10 @@ public class Main {
                 }
             }
         }
-        public static void expoMenu() {
+    /**
+     * Method for the Exposition Menu
+     */
+    public static void expoMenu() {
             boolean done = false;
             while (!done) {
                 ExpositionController expoInstance = ExpositionController.getInstance();
