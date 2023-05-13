@@ -7,10 +7,20 @@ public class Rental {
     private String rentalStatus;
     private int pendingRental;
 
+    /**
+     * Constructor method for Rental Class
+     *
+     * @param rentalInstitution
+     */
     public Rental(String rentalInstitution) {
         this.rentalInstitution = rentalInstitution;
     }
 
+    /**
+     * Method to access rentalInstitution
+     *
+     * @return
+     */
     public String getRentalInstitution() {
         return rentalInstitution;
     }

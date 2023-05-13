@@ -63,6 +63,7 @@ public class Main {
                         break;
                     case 4:
                         mainMenu();
+                        break;
                     default:
                         System.out.println("That is not a valid option");
                 }
@@ -81,7 +82,10 @@ public class Main {
                 int usrartnum = scanner.nextInt();
                 switch (usrartnum) {
                     case 1:
-                        invInstance.artworkInInventory();
+                        invInstance.showInventories();
+                        System.out.println("Select Inventory");
+                        String invName = scanner.next();
+                        invInstance.artworkInInventory(invName);
                         break;
                     case 2:
                         invInstance.inventoryDetails();
@@ -109,10 +113,11 @@ public class Main {
     public static void rentMenu() {
             boolean done = false;
             while (!done) {
+                InventoryController invInstance = InventoryController.getInstance();
                 RentalController rentInstance = RentalController.getInstance();
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("Rental Options: \n 1. Check Rental Status of an Artwork \n 2. Set Artwork for Rental \n 3. Pay Rental" +
-                        "\n 4. Add Institute \n 5. Delete Institute \n 6. Check Rented price of an Artwork \n 7. Go back");
+                        "\n 4. Add Institute \n 5. Delete Institute \n 6. Check Rented price of an Artwork \n 7. Artwork in Rent \n 8. Go back");
                 int usrartnum = scanner.nextInt();
                 switch (usrartnum) {
                     case 1:
@@ -134,6 +139,12 @@ public class Main {
                         rentInstance.rentedPrice();
                         break;
                     case 7:
+                        rentInstance.showInstitutes();
+                        System.out.println("Select Institute");
+                        String invName = scanner.next();
+                        invInstance.artworkInInventory(invName);
+                        break;
+                    case 8:
                         mainMenu();
                         break;
                     default:
@@ -148,20 +159,30 @@ public class Main {
             boolean done = false;
             while (!done) {
                 ExpositionController expoInstance = ExpositionController.getInstance();
+                InventoryController invInstance = InventoryController.getInstance();
                 Scanner scanner = new Scanner(System.in);
-                System.out.println("Exposition Options: \n 1. Create Exposition \n 2. Add Artwork to Exposition \n 3. Delete Exposition \n 4. Go back");
+                System.out.println("Exposition Options: \n 1. Create Exposition \n 2. Artwork in Exposition \n 3. Add Artwork to Exposition \n 4. Delete Exposition \n 5. Expo status \n 6. Go back");
                 int usrartnum = scanner.nextInt();
                 switch (usrartnum) {
                     case 1:
                         expoInstance.createExpo();
                         break;
                     case 2:
-                        expoInstance.setArtworkExposition();
+                        expoInstance.showExpositions();
+                        System.out.println("Select Exposition");
+                        String invName = scanner.next();
+                        invInstance.artworkInInventory(invName);
                         break;
                     case 3:
-                        expoInstance.deleteExpo();
+                        expoInstance.setArtworkExposition();
                         break;
                     case 4:
+                        expoInstance.deleteExpo();
+                        break;
+                    case 5:
+                        expoInstance.checkExpoStatus();
+                        break;
+                    case 6:
                         mainMenu();
                         break;
                     default:

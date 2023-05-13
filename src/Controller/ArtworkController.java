@@ -28,14 +28,7 @@ public class ArtworkController {
      */
     public void artworkDetails() {
         Scanner scanner = new Scanner(System.in);
-        LinkedHashMap<String, ArtWork> artWorkList = artworkList;
-        if (!artworkList.isEmpty()) {
-            Set<String> key = artWorkList.keySet();
-            int index = 1;
-            for (String artworks : key) {
-                System.out.println(index + ". " + artworks);
-                index++;
-            }
+        showArtworks();
             System.out.println("Select Artwork: ");
             String artworkName = scanner.next();
             if(!Utils.isNumeric(artworkName)) {
@@ -54,9 +47,6 @@ public class ArtworkController {
                 System.out.println("Provide the name. Please try again.");
                 artworkDetails();
             }
-        } else {
-            System.out.println("Empty list");
-        }
     }
 
     /**
@@ -91,6 +81,21 @@ public class ArtworkController {
      */
     public void deleteArtwork(){
         Scanner scanner = new Scanner(System.in);
+        showArtworks();
+            System.out.println("Artwork name to delete: ");
+            String inventoryName = scanner.next();
+            if (artworkList.containsKey(inventoryName.toLowerCase())) {
+                artworkList.remove(inventoryName.toLowerCase());
+                System.out.println("Success! Artwork " + inventoryName + " deleted.");
+            } else {
+                System.out.println("Artwork not found");
+            }
+    }
+
+    /**
+     * Method to print all the Artworks in the artworkList
+     */
+    public void showArtworks() {
         LinkedHashMap<String, ArtWork> artWorkList = artworkList;
         if (!artworkList.isEmpty()) {
             Set<String> key = artWorkList.keySet();
@@ -98,14 +103,6 @@ public class ArtworkController {
             for (String artworks : key) {
                 System.out.println(index + ". " + artworks);
                 index++;
-            }
-            System.out.println("Artwork name to delete: ");
-            String inventoryName = scanner.next();
-            if (artworkList.containsKey(inventoryName.toLowerCase())) {
-                getArtworkList().remove(inventoryName.toLowerCase());
-                System.out.println("Success! Artwork " + inventoryName + " deleted.");
-            } else {
-                System.out.println("Artwork not found");
             }
         } else {
             System.out.println("Empty List");
