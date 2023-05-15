@@ -3,6 +3,8 @@ package Controller;
 import Model.ArtWork;
 import Model.Expositon;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
@@ -21,7 +23,13 @@ public class ExpositionController {
         this.expoList = new LinkedHashMap<>();
         artworkControllerInstance = ArtworkController.getInstance();
         Expositon expositon = new Expositon("exhibition","World Fair");
-        Date date = new Date(2050, 12,5);
+        String dateStr =  "2050/12/5";
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy/MM/dd").parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         expositon.setEndDate(date);
         expoList.put(expositon.getExpoName(), expositon);
     }
@@ -52,8 +60,10 @@ public class ExpositionController {
                 }
             }
         } else {
-            artWork.setInventoryLocation(expoName.toLowerCase());
-            System.out.println(artworkName + " will be added to the exposition " + artWork.getInventoryLocation());
+            if (artWork != null) {
+                artWork.setInventoryLocation(expoName.toLowerCase());
+                System.out.println(artworkName + " will be added to the exposition " + artWork.getInventoryLocation());
+            }
         }
     }
 
@@ -204,19 +214,25 @@ public class ExpositionController {
      */
     private Date dateConfiguration() {
         Scanner scanner = new Scanner(System.in);
-            System.out.println("Select Year");
-            int startYear = scanner.nextInt();
-            System.out.println("Select Month: ");
-            int startMonth = scanner.nextInt();
-            System.out.println("Select Day");
-            int startDay = scanner.nextInt();
-            System.out.println("Date is: " + startYear + "/" + startMonth + "/" + startDay + "\n Correct?");
-            String yn = scanner.next();
-            if (!yn.equalsIgnoreCase("y")){
-                dateConfiguration();
-            }
-            Date a = new Date(startYear,startMonth,startDay);
-            return a;
+        System.out.println("Select Year");
+        int startYear = scanner.nextInt();
+        System.out.println("Select Month: ");
+        int startMonth = scanner.nextInt();
+        System.out.println("Select Day");
+        int startDay = scanner.nextInt();
+        String date = startYear + "/" + startMonth + "/" + startDay;
+        System.out.println("Date is: " + date + "\n Correct?");
+        String yn = scanner.next();
+        if (!yn.equalsIgnoreCase("y")){
+            dateConfiguration();
+        }
+        Date a = null;
+        try {
+            a = new SimpleDateFormat("yyyy/MM/dd").parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return a;
     }
 
     /**
