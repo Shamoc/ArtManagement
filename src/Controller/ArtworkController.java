@@ -29,24 +29,24 @@ public class ArtworkController {
     public void artworkDetails() {
         Scanner scanner = new Scanner(System.in);
         showArtworks();
-            System.out.println("Select Artwork: ");
-            String artworkName = scanner.next();
-            if(!Utils.isNumeric(artworkName)) {
-                ArtWork artwork = artworkList.get(artworkName);
-                if(artwork != null) {
-                    System.out.println("Name: " + artwork.getName());
-                    System.out.println("Description: " + artwork.getDescription());
-                    System.out.println("Author: " + artwork.getAuthor());
-                    System.out.println("Art style: " + artwork.getArtStyle());
-                    System.out.println("Adquisition year: " + artwork.getAdquisitionYear());
-                } else {
-                    System.out.println("Artwork not found. Please input full name.");
-                    artworkDetails();
-                }
+        System.out.println("Select Artwork: ");
+        String artworkName = scanner.next();
+        if(!Utils.isNumeric(artworkName)) {
+            ArtWork artwork = artworkList.get(artworkName);
+            if(artwork != null) {
+                System.out.println("Name: " + artwork.getName());
+                System.out.println("Description: " + artwork.getDescription());
+                System.out.println("Author: " + artwork.getAuthor());
+                System.out.println("Art style: " + artwork.getArtStyle());
+                System.out.println("Adquisition year: " + artwork.getAdquisitionYear());
             } else {
-                System.out.println("Provide the name. Please try again.");
+                System.out.println("Artwork not found. Please input full name.");
                 artworkDetails();
             }
+        } else {
+            System.out.println("Provide the name. Please try again.");
+            artworkDetails();
+        }
     }
 
     /**
@@ -82,14 +82,14 @@ public class ArtworkController {
     public void deleteArtwork(){
         Scanner scanner = new Scanner(System.in);
         showArtworks();
-            System.out.println("Artwork name to delete: ");
-            String inventoryName = scanner.next();
-            if (artworkList.containsKey(inventoryName.toLowerCase())) {
-                artworkList.remove(inventoryName.toLowerCase());
-                System.out.println("Success! Artwork " + inventoryName + " deleted.");
-            } else {
-                System.out.println("Artwork not found");
-            }
+        System.out.println("Artwork name to delete: ");
+        String inventoryName = scanner.next();
+        if (artworkList.containsKey(inventoryName.toLowerCase())) {
+            artworkList.remove(inventoryName.toLowerCase());
+            System.out.println("Success! Artwork " + inventoryName + " deleted.");
+        } else {
+            System.out.println("Artwork not found");
+        }
     }
 
     /**

@@ -33,16 +33,16 @@ public class InventoryController {
     public void inventoryDetails() {
         Scanner scanner = new Scanner(System.in);
         showInventories();
-            System.out.println("Select Inventory: ");
-            String inventoryName = scanner.next();
-            if (inventoryList.containsKey(inventoryName)) {
-                Inventory inventory = inventoryList.get(inventoryName);
-                System.out.println("Inventory: " + inventory.getInventoryName());
-                System.out.println("Inventory address: " + inventory.getInventoryAddress());
-            } else {
-                System.out.println("Inventory not found. Please try again");
-                inventoryDetails();
-            }
+        System.out.println("Select Inventory: ");
+        String inventoryName = scanner.next();
+        if (inventoryList.containsKey(inventoryName)) {
+            Inventory inventory = inventoryList.get(inventoryName);
+            System.out.println("Inventory: " + inventory.getInventoryName());
+            System.out.println("Inventory address: " + inventory.getInventoryAddress());
+        } else {
+            System.out.println("Inventory not found. Please try again");
+            inventoryDetails();
+        }
     }
 
     /**
@@ -58,29 +58,35 @@ public class InventoryController {
         artworkControllerInstance.showArtworks();
         System.out.println("Select Artwork: ");
         String artworkName = scanner.next();
-        ArtWork artWork = artworkControllerInstance.getArtworkList().get(artworkName);
-        System.out.println("Select destination: ");
-        showInventories();
-        String artworkLocation = scanner.next();
-        if (inventoryList.containsKey(artworkLocation)) {
-            if (rentalControllerInstance.getInstituteList().containsKey(artWork.getInventoryLocation()) ||
-                    expositionControllerInstance.getExpoList().containsKey(artWork.getInventoryLocation())) {
-                System.out.println(artworkName + " is located in: " + artWork.getInventoryLocation());
-                System.out.println("Do you wish to continue? Y/N");
-                String useryn = scanner.next();
-                if (useryn.equalsIgnoreCase("y")) {
-                    if (rentalControllerInstance.onActiveRent(artWork) || expositionControllerInstance.onActiveExpo(artWork)) {
-                        System.out.println("Artwork can not be put into inventory \n Check Rental or Expo status");
+        LinkedHashMap<String, ArtWork> artList = artworkControllerInstance.getArtworkList();
+        ArtWork artWork = artList.get(artworkName.toLowerCase());
+        if(artWork!=null) {
+            System.out.println("Select destination: ");
+            showInventories();
+            String artworkLocation = scanner.next();
+            if (inventoryList.containsKey(artworkLocation)) {
+                boolean rentalListTest = rentalControllerInstance.getInstituteList().containsKey(artWork.getInventoryLocation());
+                boolean expoListTest = expositionControllerInstance.getExpoList().containsKey(artWork.getInventoryLocation());
+                if (rentalListTest || expoListTest) {
+                    rentalListTest = rentalControllerInstance.onActiveRent(artWork);
+                    expoListTest = expositionControllerInstance.onActiveExpo(artWork);
+                    if (!rentalListTest && !expoListTest) {
+                        artWork.setInventoryLocation(artworkLocation);
+                        System.out.println(artworkName + " will be sent to inventory " + artWork.getInventoryLocation());
                     } else {
-                        return;
+                        System.out.println(artworkName + " is located in: " + artWork.getInventoryLocation());
+                        System.out.println("Artwork can not be put into inventory \n Check Rental or Expo status");
                     }
+                } else {
+                    artWork.setInventoryLocation(artworkLocation);
+                    System.out.println(artworkName + " will be sent to inventory " + artWork.getInventoryLocation());
                 }
             } else {
-                artWork.setInventoryLocation(artworkLocation);
-                System.out.println(artworkName + " will be sent to inventory " + artWork.getInventoryLocation());
+                System.out.println("Inventory not found. Please input the exact name");
+                setArtworkInventory();
             }
         } else {
-            System.out.println("Inventory not found. Please input the exact name");
+            System.out.println("Artwork not found. Try again");
             setArtworkInventory();
         }
     }

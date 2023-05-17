@@ -23,7 +23,7 @@ public class ExpositionController {
         this.expoList = new LinkedHashMap<>();
         artworkControllerInstance = ArtworkController.getInstance();
         Expositon expositon = new Expositon("exhibition","World Fair");
-        String dateStr =  "2050/12/5";
+        String dateStr =  "2010/12/5";
         Date date = null;
         try {
             date = new SimpleDateFormat("yyyy/MM/dd").parse(dateStr);
@@ -46,24 +46,36 @@ public class ExpositionController {
         artworkControllerInstance.showArtworks();
         System.out.println("Select Artwork: ");
         String artworkName = scanner.next();
-        ArtWork artWork = artworkControllerInstance.getArtworkList().get(artworkName.toLowerCase());
-        showExpositions();
-        System.out.println("Select Exposition: ");
-        String expoName = scanner.next();
-        if (expoList.containsKey(expoName.toLowerCase())) {
-            if (rentalControllerInstance.getInstituteList().containsKey(artWork.getInventoryLocation())) {
-                System.out.println(artworkName + " is not available for exhibition \n Location: " + artWork.getInventoryLocation());
-                if (rentalControllerInstance.onActiveRent(artWork)) {
-                    System.out.println("Artwork can not be exhibit \n Check Rental status");
+        LinkedHashMap<String, ArtWork> artList = artworkControllerInstance.getArtworkList();
+        ArtWork artWork = artList.get(artworkName.toLowerCase());
+        if (artWork != null) {
+            showExpositions();
+            System.out.println("Select Exposition: ");
+            String expoName = scanner.next();
+            if (expoList.containsKey(expoName.toLowerCase())) {
+                boolean rentalListTest = rentalControllerInstance.getInstituteList().containsKey(artWork.getInventoryLocation());
+                if (rentalListTest) {
+                    rentalListTest = rentalControllerInstance.onActiveRent(artWork);
+                    Expositon expo = expoList.get(expoName);
+                    boolean expoStatusTest = expo.getExpoStatus();
+                    if (!rentalListTest && !expoStatusTest ) {
+                        artWork.setInventoryLocation(expoName.toLowerCase());
+                        System.out.println(artworkName + " will be added to the exposition " + artWork.getInventoryLocation());
+                    } else {
+                        System.out.println(artworkName + " is not available for exhibition \n Location: " + artWork.getInventoryLocation());
+                        System.out.println("Artwork can not be exhibit");
+                    }
                 } else {
-                    return;
+                    artWork.setInventoryLocation(expoName.toLowerCase());
+                    System.out.println(artworkName + " will be added to the exposition " + artWork.getInventoryLocation());
                 }
-            }
+            } else {
+                System.out.println("Exposition not found. Try again");
+                setArtworkExposition();
+                }
         } else {
-            if (artWork != null) {
-                artWork.setInventoryLocation(expoName.toLowerCase());
-                System.out.println(artworkName + " will be added to the exposition " + artWork.getInventoryLocation());
-            }
+            System.out.println("Artwork not found. Try again");
+            setArtworkExposition();
         }
     }
 
@@ -77,13 +89,15 @@ public class ExpositionController {
      */
     public boolean onActiveExpo(ArtWork artWork) {
         String test = artWork.getInventoryLocation();
-        if (!expoList.containsKey(test.toLowerCase())) {
-            return false;
-        }
-        Expositon expositon = expoList.get(test.toLowerCase());
-        updateExpoStatus(expositon.getExpoName().toLowerCase());
-        if (expositon.getExpoStatus()){
-            return true;
+        if (test != null) {
+            if (!expoList.containsKey(test.toLowerCase())) {
+                return false;
+            }
+            Expositon expositon = expoList.get(test.toLowerCase());
+            updateExpoStatus(expositon.getExpoName().toLowerCase());
+            if (expositon.getExpoStatus()) {
+                return true;
+            }
         }
         return false;
     }
@@ -99,14 +113,19 @@ public class ExpositionController {
         showExpositions();
         System.out.println("Select Exposition: ");
         String expoName = scanner.next();
-        updateExpoStatus(expoName.toLowerCase());
-        if (expoList.get(expoName).getExpoStatus()) {
-            System.out.println("Status: Active");
+        if (expoList.containsKey(expoName.toLowerCase())) {
+            updateExpoStatus(expoName.toLowerCase());
+            if (expoList.get(expoName.toLowerCase()).getExpoStatus()) {
+                System.out.println("Status: Active");
+            } else {
+                System.out.println("Status: Completed");
+            }
+            System.out.println("Starting Date: " + expoList.get(expoName.toLowerCase()).getStartDate());
+            System.out.println("Ending Date: " + expoList.get(expoName.toLowerCase()).getEndDate());
         } else {
-            System.out.println("Status: Completed");
+            System.out.println("Exposition not found. Please try again");
+            checkExpoStatus();
         }
-        System.out.println("Starting Date: " + expoList.get(expoName).getStartDate());
-        System.out.println("Ending Date: " + expoList.get(expoName).getEndDate());
     }
 
     /**
@@ -220,10 +239,14 @@ public class ExpositionController {
         int startMonth = scanner.nextInt();
         System.out.println("Select Day");
         int startDay = scanner.nextInt();
+        if(startMonth>12 || startDay>31){
+            System.out.println("Error! Month or Day are not correct. Try again.");
+            dateConfiguration();
+        }
         String date = startYear + "/" + startMonth + "/" + startDay;
-        System.out.println("Date is: " + date + "\n Correct?");
+        System.out.println("Date is: " + date + "\n Correct? Y/N");
         String yn = scanner.next();
-        if (!yn.equalsIgnoreCase("y")){
+        if (!yn.equalsIgnoreCase("y") || !yn.equalsIgnoreCase("yes")){
             dateConfiguration();
         }
         Date a = null;
