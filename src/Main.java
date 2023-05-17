@@ -6,6 +6,10 @@ import Controller.RentalController;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Scanner;
 
 public class Main {
@@ -191,11 +195,26 @@ public class Main {
             }
         }
         public static void main(String[] args) {
+            Connection connection = null;
             try {
-                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("myfile.txt"));
-                bufferedWriter.write("queso");
-            } catch (IOException e){
-                System.out.println("su queso");
+                // below two lines are used for connectivity.
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                connection = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3306/artcodb",
+                        "root", "wjcXWo69^1ez2S#hMShCh$WeLxIJXz");
+
+                // mydb is database
+                // mydbuser is name of database
+                // mydbuser is password of database
+
+                Statement statement;
+                statement = connection.createStatement();
+                ResultSet resultSet;
+                resultSet = statement.executeQuery(
+                        "select * from arts");
+            }
+            catch (Exception exception) {
+                System.out.println(exception);
             }
             mainMenu();
         }
