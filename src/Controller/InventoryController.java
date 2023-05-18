@@ -5,6 +5,7 @@ import Model.Inventory;
 import com.sun.tools.javac.Main;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ public class InventoryController {
     private LinkedHashMap<String, Inventory> inventoryList;
     private static InventoryController inventoryListInstance = null;
     private static ArtworkController artworkControllerInstance;
+    private LinkedHashMap<String, ArtWork> artworkList = artworkControllerInstance.getArtworkList();
 
 
     /**
@@ -58,8 +60,7 @@ public class InventoryController {
         artworkControllerInstance.showArtworks();
         System.out.println("Select Artwork: ");
         String artworkName = scanner.next();
-        LinkedHashMap<String, ArtWork> artList = artworkControllerInstance.getArtworkList();
-        ArtWork artWork = artList.get(artworkName.toLowerCase());
+        ArtWork artWork = artworkList.get(artworkName.toLowerCase());
         if(artWork!=null) {
             System.out.println("Select destination: ");
             showInventories();
@@ -97,12 +98,11 @@ public class InventoryController {
      * @param inventoryName String to determine the inventory from where to look from.
      */
     public void artworkInInventory(String inventoryName) {
-        LinkedHashMap<String, ArtWork> artWorkList = artworkControllerInstance.getArtworkList();
         int index = 1;
-        if (!artWorkList.isEmpty()) {
-            Set<String> artKey = artWorkList.keySet();
+        if (!artworkList.isEmpty()) {
+            Set<String> artKey = artworkList.keySet();
             for (String artworks : artKey) {
-                if (artWorkList.get(artworks).getInventoryLocation().equalsIgnoreCase(inventoryName)) {
+                if (artworkList.get(artworks).getInventoryLocation().equalsIgnoreCase(inventoryName)) {
                     System.out.println(index + ". " + artworks);
                 }
             }
@@ -166,9 +166,8 @@ public class InventoryController {
      * Method to print all the inventories in the inventoryList
      */
     public void showInventories() {
-        LinkedHashMap<String, Inventory> invList = inventoryList;
         if (!inventoryList.isEmpty()) {
-            Set<String> invKey = invList.keySet();
+            Set<String> invKey = inventoryList.keySet();
             int index = 1;
             for (String inventory : invKey) {
                 System.out.println(index + ". " + inventory);
@@ -208,10 +207,9 @@ public class InventoryController {
      * @return Flag when an Artwork is found in the provided inventory
      */
     private boolean inventoryHasArtwork(String inventory) {
-        LinkedHashMap<String, ArtWork> artWorkList = artworkControllerInstance.getArtworkList();
-        Set<String> artKey = artWorkList.keySet();
+        Set<String> artKey = artworkList.keySet();
         for (String artworks : artKey) {
-            if (artWorkList.get(artworks).getInventoryLocation().equalsIgnoreCase(inventory)) {
+            if (artworkList.get(artworks).getInventoryLocation().equalsIgnoreCase(inventory)) {
                 return true;
             }
         }

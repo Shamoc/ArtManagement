@@ -15,6 +15,7 @@ public class RentalController {
     private LinkedHashMap<String, Rental> instituteList;
     private static RentalController instituteListInstance = null;
     private static ArtworkController artworkControllerInstance;
+    private LinkedHashMap<String, ArtWork> artworkList = artworkControllerInstance.getArtworkList();
 
     /**
      * Constructor for RentalController
@@ -43,8 +44,7 @@ public class RentalController {
         artworkControllerInstance.showArtworks();
         System.out.println("Select Artwork: ");
         String artworkName = scanner.next();
-        LinkedHashMap<String, ArtWork> artList = artworkControllerInstance.getArtworkList();
-        ArtWork artWork = artList.get(artworkName.toLowerCase());
+        ArtWork artWork = artworkList.get(artworkName.toLowerCase());
         if (artWork != null) {
             showInstitutes();
             System.out.println("Select Institute: ");
@@ -103,10 +103,9 @@ public class RentalController {
     public void checkRentalStatus() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please select artwork: ");
-        LinkedHashMap<String, ArtWork> artWorkList = artworkControllerInstance.getArtworkList();
         showInstitutes();
         String selectedArt = scanner.next();
-        ArtWork artWork = artWorkList.get(selectedArt);
+        ArtWork artWork = artworkList.get(selectedArt);
         if(artWork != null) {
             if (onActiveRent(artWork)) {
                 String rentalStatus = getInstituteList().get(artWork.getInventoryLocation()).getRentalStatus();
@@ -130,8 +129,7 @@ public class RentalController {
         System.out.println("Please select the Artwork: ");
         artworkControllerInstance.showArtworks();
         String artworkName = scanner.next();
-        LinkedHashMap<String, ArtWork> artList = artworkControllerInstance.getArtworkList();
-        ArtWork artwork = artList.get(artworkName.toLowerCase());
+        ArtWork artwork = artworkList.get(artworkName.toLowerCase());
         String artworkLocation = artwork.getInventoryLocation();
         if (artworkLocation != null) {
             int artworkRentPrice = instituteList.get(artworkLocation).getPendingRental();
@@ -206,8 +204,7 @@ public class RentalController {
         System.out.println("Please select the Artwork: ");
         artworkControllerInstance.showArtworks();
         String artworkName = scanner.next();
-        LinkedHashMap<String, ArtWork> artList = artworkControllerInstance.getArtworkList();
-        ArtWork artwork = artList.get(artworkName.toLowerCase());
+        ArtWork artwork = artworkList.get(artworkName.toLowerCase());
         String artworkLocation = artwork.getInventoryLocation();
         if (artworkLocation != null) {
             System.out.println("Renting Institution: " + artworkLocation);
@@ -279,9 +276,8 @@ public class RentalController {
      * Method to print all the Institutes in instituteList
      */
     public void showInstitutes() {
-        LinkedHashMap<String, Rental> invList = instituteList;
         if (!instituteList.isEmpty()) {
-            Set<String> instkey = invList.keySet();
+            Set<String> instkey = instituteList.keySet();
             int index = 1;
             for (String artworks : instkey) {
                 System.out.println(index + ". " + artworks);

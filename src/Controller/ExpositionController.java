@@ -15,6 +15,7 @@ public class ExpositionController {
     private LinkedHashMap<String, Expositon> expoList;
     private static ExpositionController ExpoListInstance = null;
     private static ArtworkController artworkControllerInstance;
+    private LinkedHashMap<String, ArtWork> artworkList = artworkControllerInstance.getArtworkList();
 
     /**
      * ExpositionController constructor
@@ -46,8 +47,7 @@ public class ExpositionController {
         artworkControllerInstance.showArtworks();
         System.out.println("Select Artwork: ");
         String artworkName = scanner.next();
-        LinkedHashMap<String, ArtWork> artList = artworkControllerInstance.getArtworkList();
-        ArtWork artWork = artList.get(artworkName.toLowerCase());
+        ArtWork artWork = artworkList.get(artworkName.toLowerCase());
         if (artWork != null) {
             showExpositions();
             System.out.println("Select Exposition: ");
@@ -215,9 +215,8 @@ public class ExpositionController {
      * Method to print all the Expositions in expoList
      */
     public void showExpositions() {
-        LinkedHashMap<String, Expositon> invList = expoList;
         if (!expoList.isEmpty()) {
-            Set<String> expoKey = invList.keySet();
+            Set<String> expoKey = expoList.keySet();
             int index = 1;
             for (String exposition : expoKey) {
                 System.out.println(index + ". " + exposition);
