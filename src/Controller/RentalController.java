@@ -80,14 +80,16 @@ public class RentalController {
      * @return The boolean flag of an Artwork rent status
      */
     public boolean onActiveRent(ArtWork artWork) {
-        String test = artWork.getInventoryLocation();
-        if(test != null) {
-            if (!instituteList.containsKey(test)) {
-                return false;
-            }
-            Rental rental = instituteList.get(test);
-            if (rental.getRentalStatus().equalsIgnoreCase("unpaid") || rental.getRentalStatus().equalsIgnoreCase("pending")) {
-                return true;
+        if (artWork != null) {
+            String instContainsArt = artWork.getInventoryLocation();
+            if (instContainsArt != null) {
+                if (!instituteList.containsKey(instContainsArt)) {
+                    return false;
+                }
+                Rental rental = instituteList.get(instContainsArt);
+                if (rental.getRentalStatus().equalsIgnoreCase("unpaid") || rental.getRentalStatus().equalsIgnoreCase("pending")) {
+                    return true;
+                }
             }
         }
         return true;

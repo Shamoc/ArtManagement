@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b80c5ef-9b46-474b-a863-f01f3f3b6efb" name="Changes" comment="Date configuration edge case, &#10;artwork != null in steps in setArtworkforRental/Exposition/Inventory.">
+    <list default="true" id="4b80c5ef-9b46-474b-a863-f01f3f3b6efb" name="Changes" comment="Added DB connection.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ArtManagement.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ArtManagement.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/ExpositionController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Controller/ExpositionController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/InventoryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Controller/InventoryController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/RentalController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Controller/RentalController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ExpositionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExpositionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/RentalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RentalController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,16 +41,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Program Files (x86)/MySQL/Connector J 8.0",
-    "project.structure.last.edited": "Global Libraries",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Program Files (x86)/MySQL/Connector J 8.0&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Global Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Controller.Main" />
@@ -204,7 +202,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684345936904</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Added DB connection.">
+      <created>1684348320037</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1684348320037</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -232,7 +237,8 @@
     <MESSAGE value="Added inventory filter.&#10;pendingRent atribute to Rental.&#10;Rental price of an Artwork method." />
     <MESSAGE value="Added createExpo new flow, checkExpoStatus method, updateExpoStatus method, dateConfiguration method and method to show information from lists of all controller classes." />
     <MESSAGE value="Date configuration edge case, &#10;artwork != null in steps in setArtworkforRental/Exposition/Inventory." />
-    <option name="LAST_COMMIT_MESSAGE" value="Date configuration edge case, &#10;artwork != null in steps in setArtworkforRental/Exposition/Inventory." />
+    <MESSAGE value="Added DB connection." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added DB connection." />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

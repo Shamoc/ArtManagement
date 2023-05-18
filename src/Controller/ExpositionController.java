@@ -88,15 +88,17 @@ public class ExpositionController {
      * @return Determines if the Exposition of an Artwork is true or false
      */
     public boolean onActiveExpo(ArtWork artWork) {
-        String test = artWork.getInventoryLocation();
-        if (test != null) {
-            if (!expoList.containsKey(test.toLowerCase())) {
-                return false;
-            }
-            Expositon expositon = expoList.get(test.toLowerCase());
-            updateExpoStatus(expositon.getExpoName().toLowerCase());
-            if (expositon.getExpoStatus()) {
-                return true;
+        if (artWork != null) {
+            String expoContainsArt = artWork.getInventoryLocation();
+            if (expoContainsArt != null) {
+                if (!expoList.containsKey(expoContainsArt.toLowerCase())) {
+                    return false;
+                }
+                Expositon expositon = expoList.get(expoContainsArt.toLowerCase());
+                updateExpoStatus(expositon.getExpoName().toLowerCase());
+                if (expositon.getExpoStatus()) {
+                    return true;
+                }
             }
         }
         return false;
