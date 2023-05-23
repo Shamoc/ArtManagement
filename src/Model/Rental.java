@@ -2,26 +2,25 @@ package Model;
 
 public class Rental {
 
-    private ArtWork artWork;
     private String rentalInstitution;
-    private double rentalPrice;
+    private int rentalPrice;
     private String rentalStatus;
+    private int pendingRental;
 
-    public Rental(ArtWork artWork, String rentalInstitution, double rentalPrice, String rentalStatus) {
-        this.artWork = artWork;
+    /**
+     * Constructor method for Rental Class
+     *
+     * @param rentalInstitution
+     */
+    public Rental(String rentalInstitution) {
         this.rentalInstitution = rentalInstitution;
-        this.rentalPrice = rentalPrice;
-        this.rentalStatus = rentalStatus;
     }
 
-    public ArtWork getArtWork() {
-        return artWork;
-    }
-
-    public void setArtWork(ArtWork artWork) {
-        this.artWork = artWork;
-    }
-
+    /**
+     * Method to access rentalInstitution
+     *
+     * @return
+     */
     public String getRentalInstitution() {
         return rentalInstitution;
     }
@@ -30,11 +29,11 @@ public class Rental {
         this.rentalInstitution = rentalInstitution;
     }
 
-    public double getRentalPrice() {
+    public int getRentalPrice() {
         return rentalPrice;
     }
 
-    public void setRentalPrice(double rentalPrice) {
+    public void setRentalPrice(int rentalPrice) {
         this.rentalPrice = rentalPrice;
     }
 
@@ -44,5 +43,13 @@ public class Rental {
 
     public void setRentalStatus(String rentalStatus) {
         this.rentalStatus = rentalStatus;
+    }
+
+    public int getPendingRental() {
+        return pendingRental;
+    }
+
+    public void setPendingRental(int pendingRental) {
+        this.pendingRental = pendingRental;
     }
 }

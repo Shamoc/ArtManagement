@@ -1,25 +1,19 @@
 package Model;
 
-import java.util.LinkedHashMap;
+import java.util.Date;
 
 public class Expositon {
 
-    private LinkedHashMap<String, ArtWork> expoArtWorkList;
     private String expoName;
     private String expoDescription;
+    private boolean expoStatus;
+    private Date startDate;
+    private Date endDate;
 
-    public Expositon(LinkedHashMap<String, ArtWork> expoArtWorkList, String expoName, String expoDescription) {
-        this.expoArtWorkList = expoArtWorkList;
+    public Expositon(String expoName, String expoDescription) {
         this.expoName = expoName;
         this.expoDescription = expoDescription;
-    }
-
-    public LinkedHashMap<String, ArtWork> getExpoArtWorkList() {
-        return expoArtWorkList;
-    }
-
-    public void setExpoArtWorkList(LinkedHashMap<String, ArtWork> expoArtWorkList) {
-        this.expoArtWorkList = expoArtWorkList;
+        this.setExpoStatus(expoStatus);
     }
 
     public String getExpoName() {
@@ -36,5 +30,29 @@ public class Expositon {
 
     public void setExpoDescription(String expoDescription) {
         this.expoDescription = expoDescription;
+    }
+
+    public Boolean getExpoStatus() {
+        return expoStatus;
+    }
+
+    public void setExpoStatus(Boolean expoStatus) {
+        this.expoStatus = expoStatus;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }
