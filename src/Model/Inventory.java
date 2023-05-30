@@ -1,7 +1,5 @@
 package Model;
 
-import java.util.LinkedHashMap;
-
 public class Inventory {
     private String inventoryName;
     private String inventoryAddress;

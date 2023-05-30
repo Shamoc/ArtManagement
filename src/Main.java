@@ -3,9 +3,6 @@ import Controller.ExpositionController;
 import Controller.InventoryController;
 import Controller.RentalController;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -13,6 +10,7 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 public class Main {
+
     /**
      * Method for the Main Menu
      */

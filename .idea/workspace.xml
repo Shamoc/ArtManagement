@@ -4,7 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b80c5ef-9b46-474b-a863-f01f3f3b6efb" name="Changes" comment="Fixed onActiveRent/Expo artwork != null." />
+    <list default="true" id="4b80c5ef-9b46-474b-a863-f01f3f3b6efb" name="Changes" comment="Fixed Date configuration loop validation. &#10;Fixed DeleteInventory/Rental/Exposition empty list message.&#10;Fixed Add artowork to completed exhibitions. &#10;Changed Half Payment to Partial Payments in rentalChangeStatus.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/ArtworkController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Controller/ArtworkController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/ExpositionController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Controller/ExpositionController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/InventoryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Controller/InventoryController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/RentalController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Controller/RentalController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Model/Inventory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Model/Inventory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ArtworkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ArtworkController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ExpositionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExpositionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/InventoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/InventoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/RentalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RentalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Inventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Inventory.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -216,7 +230,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684389727138</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Added attribute artworkList.">
+      <created>1684390327127</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1684390327127</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -224,7 +245,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="Revision_3" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -246,7 +279,8 @@
     <MESSAGE value="Date configuration edge case, &#10;artwork != null in steps in setArtworkforRental/Exposition/Inventory." />
     <MESSAGE value="Added DB connection." />
     <MESSAGE value="Fixed onActiveRent/Expo artwork != null." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed onActiveRent/Expo artwork != null." />
+    <MESSAGE value="Added attribute artworkList." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added attribute artworkList." />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
