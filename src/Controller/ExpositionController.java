@@ -5,10 +5,7 @@ import Model.Expositon;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class ExpositionController {
 
@@ -25,14 +22,18 @@ public class ExpositionController {
         artworkControllerInstance = ArtworkController.getInstance();
         artworkList = artworkControllerInstance.getArtworkList();
         Expositon expositon = new Expositon("exhibition","World Fair");
-        String dateStr =  "2010/12/5";
+        String dateEn =  "2010/12/5";
+        String dateSt = "2000/1/5";
         Date date = null;
+        Date dateStart = null;
         try {
-            date = new SimpleDateFormat("yyyy/MM/dd").parse(dateStr);
+            date = new SimpleDateFormat("yyyy/MM/dd").parse(dateEn);
+            dateStart = new SimpleDateFormat("yyyy/MM/dd").parse(dateSt);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         expositon.setEndDate(date);
+        expositon.setStartDate(dateStart);
         expoList.put(expositon.getExpoName(), expositon);
     }
 
@@ -57,7 +58,7 @@ public class ExpositionController {
                 if(!artWork.getInventoryLocation().equalsIgnoreCase(expoName.toLowerCase())) {
                     boolean rentalListTest = rentalControllerInstance.getInstituteList().containsKey(artWork.getInventoryLocation());
                     Expositon expo = expoList.get(expoName);
-                    boolean expoStatusTest = expo.getExpoStatus();
+                    boolean expoStatusTest = expo.getExpoCompleteStatus();
                     if (rentalListTest || expoStatusTest) {
                         rentalListTest = rentalControllerInstance.isOnRent(artWork);
                         if (!rentalListTest) {
@@ -102,7 +103,7 @@ public class ExpositionController {
             }
             Expositon expositon = expoList.get(expoContainsArt.toLowerCase());
             updateExpoStatus(expositon.getExpoName().toLowerCase());
-            if (expositon.getExpoStatus()) {
+            if (expositon.getExpoCompleteStatus()) {
                 return true;
             }
         }
@@ -122,13 +123,22 @@ public class ExpositionController {
         String expoName = scanner.next();
         if (expoList.containsKey(expoName.toLowerCase())) {
             updateExpoStatus(expoName.toLowerCase());
-            if (expoList.get(expoName.toLowerCase()).getExpoStatus()) {
-                System.out.println("Status: Active");
-            } else {
-                System.out.println("Status: Completed");
+            Date currentDate = new Date();
+            Date start = expoList.get(expoName.toLowerCase()).getStartDate();
+            Date end = expoList.get(expoName.toLowerCase()).getEndDate();
+            if (start.after(currentDate)) {
+                if (expoList.get(expoName.toLowerCase()).getExpoCompleteStatus()) {
+                    System.out.println("Starting: " + expoList.get(expoName.toLowerCase()).getStartDate());
+                }
+            } else if (start.before(currentDate)) {
+                if (end.after(currentDate)) {
+                    System.out.println("Status: Active");
+                } else {
+                    System.out.println("Status: Completed");
+                }
+                System.out.println("Starting Date: " + expoList.get(expoName.toLowerCase()).getStartDate());
+                System.out.println("Ending Date: " + expoList.get(expoName.toLowerCase()).getEndDate());
             }
-            System.out.println("Starting Date: " + expoList.get(expoName.toLowerCase()).getStartDate());
-            System.out.println("Ending Date: " + expoList.get(expoName.toLowerCase()).getEndDate());
         } else {
             System.out.println("Exposition not found. Please try again");
             checkExpoStatus();
@@ -186,7 +196,7 @@ public class ExpositionController {
             String expoName = scanner.next();
             if (expoList.containsKey(expoName.toLowerCase())) {
                 updateExpoStatus(expoName.toLowerCase());
-                if (!expoList.get(expoName.toLowerCase()).getExpoStatus()) {
+                if (!expoList.get(expoName.toLowerCase()).getExpoCompleteStatus()) {
                     expoList.remove(expoName.toLowerCase());
                     System.out.println("Exposition " + expoName.toLowerCase() + " has been deleted.");
                 } else {
@@ -242,51 +252,56 @@ public class ExpositionController {
      * @return Date
      */
     private Date dateConfiguration() {
-        Scanner scanner = new Scanner(System.in);
-        int startYear = 1;
-        int startMonth = 1;
-        int startDay = 1;
-        boolean done = false;
-        while (!done) {
-            System.out.println("Select Year");
-            startYear = scanner.nextInt();
-            if (startYear < 1) {
-                System.out.println("Year can not be less than 1");
-            } else {
-                done = true;
-            }
-        }
-        done = false;
-        while (!done) {
-            System.out.println("Select Month: ");
-            startMonth = scanner.nextInt();
-            if (startMonth > 12){
-                System.out.println("Error! Please enter a valid Month number");
-            } else {
-                done = true;
-            }
-        }
-        done = false;
-        while (!done) {
-            System.out.println("Select Day");
-            startDay = scanner.nextInt();
-            if (startDay > 31 || startDay < 1) {
-                System.out.println("Error! Please enter a valid Day number");
-            } else {
-                done = true;
-            }
-        }
-        String date = startYear + "/" + startMonth + "/" + startDay;
-        System.out.println("Date is: " + date + "\n Correct? Y/N");
-        String yn = scanner.next();
-        if (!yn.equalsIgnoreCase("y") && !yn.equalsIgnoreCase("yes")){
-            dateConfiguration();
-        }
         Date a = null;
         try {
-            a = new SimpleDateFormat("yyyy/MM/dd").parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
+            Scanner scanner = new Scanner(System.in);
+            int startYear = 1;
+            int startMonth = 1;
+            int startDay = 1;
+            boolean done = false;
+            while (!done) {
+                System.out.println("Select Year");
+                startYear = scanner.nextInt();
+                if (startYear < 1) {
+                    System.out.println("Year can not be less than 1");
+                } else {
+                    done = true;
+                }
+            }
+            done = false;
+            while (!done) {
+                System.out.println("Select Month: ");
+                startMonth = scanner.nextInt();
+                if (startMonth > 12) {
+                    System.out.println("Error! Please enter a valid Month number");
+                } else {
+                    done = true;
+                }
+            }
+            done = false;
+            while (!done) {
+                System.out.println("Select Day");
+                startDay = scanner.nextInt();
+                if (startDay > 31 || startDay < 1) {
+                    System.out.println("Error! Please enter a valid Day number");
+                } else {
+                    done = true;
+                }
+            }
+            String date = startYear + "/" + startMonth + "/" + startDay;
+            System.out.println("Date is: " + date + "\n Correct? Y/N");
+            String yn = scanner.next();
+            if (!yn.equalsIgnoreCase("y") && !yn.equalsIgnoreCase("yes")) {
+                dateConfiguration();
+            }
+            try {
+                a = new SimpleDateFormat("yyyy/MM/dd").parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Please enter only numbers");
+            dateConfiguration();
         }
         return a;
     }
@@ -299,11 +314,15 @@ public class ExpositionController {
     private void updateExpoStatus(String expoName) {
        Date currentDate = new Date();
        Date end = expoList.get(expoName.toLowerCase()).getEndDate();
-
-        if(end.before(currentDate)){
-            expoList.get(expoName).setExpoStatus(false);
-        } else if (end.after(currentDate)){
-            expoList.get(expoName.toLowerCase()).setExpoStatus(true);
+       Date start = expoList.get(expoName.toLowerCase()).getStartDate();
+        if (start.before(currentDate)) {
+            if (end.after(currentDate)) {
+                expoList.get(expoName.toLowerCase()).setExpoCompleteStatus(true);
+            } else {
+                expoList.get(expoName.toLowerCase()).setExpoCompleteStatus(false);
+            }
+        } else if (start.after(currentDate)) {
+            expoList.get(expoName.toLowerCase()).setExpoCompleteStatus(true);
         }
     }
 }

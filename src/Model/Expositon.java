@@ -6,14 +6,14 @@ public class Expositon {
 
     private String expoName;
     private String expoDescription;
-    private boolean expoStatus;
+    private boolean expoCompleteStatus;
     private Date startDate;
     private Date endDate;
 
     public Expositon(String expoName, String expoDescription) {
         this.expoName = expoName;
         this.expoDescription = expoDescription;
-        this.setExpoStatus(expoStatus);
+        this.setExpoCompleteStatus(expoCompleteStatus);
     }
 
     public String getExpoName() {
@@ -32,12 +32,12 @@ public class Expositon {
         this.expoDescription = expoDescription;
     }
 
-    public Boolean getExpoStatus() {
-        return expoStatus;
+    public Boolean getExpoCompleteStatus() {
+        return expoCompleteStatus;
     }
 
-    public void setExpoStatus(Boolean expoStatus) {
-        this.expoStatus = expoStatus;
+    public void setExpoCompleteStatus(Boolean expoCompleteStatus) {
+        this.expoCompleteStatus = expoCompleteStatus;
     }
 
     public Date getStartDate() {
