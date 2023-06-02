@@ -2,10 +2,8 @@ package Controller;
 
 import Model.ArtWork;
 import Model.Inventory;
-import com.sun.tools.javac.Main;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -14,7 +12,9 @@ public class InventoryController {
     private LinkedHashMap<String, Inventory> inventoryList;
     private static InventoryController inventoryListInstance = null;
     private static ArtworkController artworkControllerInstance;
-    private LinkedHashMap<String, ArtWork> artworkList = artworkControllerInstance.getArtworkList();
+    private static RentalController rentalControllerInstance;
+    private static ExpositionController expositionControllerInstance;
+    private LinkedHashMap<String, ArtWork> artworkList;
 
 
     /**
@@ -23,6 +23,9 @@ public class InventoryController {
     private InventoryController() {
         this.inventoryList = new LinkedHashMap<>();
         artworkControllerInstance = ArtworkController.getInstance();
+        rentalControllerInstance = RentalController.getInstance();
+        expositionControllerInstance = ExpositionController.getInstance();
+        artworkList = artworkControllerInstance.getArtworkList();
         Inventory defaultInventory = new Inventory("storage", "storage");
         getInventoryList().put(defaultInventory.getInventoryName(), defaultInventory);
     }
@@ -54,8 +57,6 @@ public class InventoryController {
      * @see #artworkControllerInstance
      */
     public void setArtworkInventory() {
-        RentalController rentalControllerInstance = RentalController.getInstance();
-        ExpositionController expositionControllerInstance = ExpositionController.getInstance();
         Scanner scanner = new Scanner(System.in);
         artworkControllerInstance.showArtworks();
         System.out.println("Select Artwork: ");
@@ -66,12 +67,13 @@ public class InventoryController {
             showInventories();
             String artworkLocation = scanner.next();
             if (inventoryList.containsKey(artworkLocation)) {
-                boolean rentalListTest = rentalControllerInstance.getInstituteList().containsKey(artWork.getInventoryLocation());
-                boolean expoListTest = expositionControllerInstance.getExpoList().containsKey(artWork.getInventoryLocation());
-                if (rentalListTest || expoListTest) {
-                    rentalListTest = rentalControllerInstance.onActiveRent(artWork);
-                    expoListTest = expositionControllerInstance.onActiveExpo(artWork);
-                    if (!rentalListTest && !expoListTest) {
+                boolean isInstituteLocation = rentalControllerInstance.getInstituteList().containsKey(artWork.getInventoryLocation());
+                boolean isExpoLocation = expositionControllerInstance.getExpoList().containsKey(artWork.getInventoryLocation());
+                if (isInstituteLocation || isExpoLocation) {
+                    boolean isOnRent = rentalControllerInstance.isOnRent(artWork);
+                    boolean isExpoActive = expositionControllerInstance.onActiveExpo(artWork);
+                    boolean isRentPaid = isOnRent ? rentalControllerInstance.isRentPaid(artWork) : true;
+                    if (isRentPaid && !isExpoActive) {
                         artWork.setInventoryLocation(artworkLocation);
                         System.out.println(artworkName + " will be sent to inventory " + artWork.getInventoryLocation());
                     } else {
@@ -99,15 +101,22 @@ public class InventoryController {
      */
     public void artworkInInventory(String inventoryName) {
         int index = 1;
-        if (!artworkList.isEmpty()) {
-            Set<String> artKey = artworkList.keySet();
-            for (String artworks : artKey) {
-                if (artworkList.get(artworks).getInventoryLocation().equalsIgnoreCase(inventoryName)) {
-                    System.out.println(index + ". " + artworks);
+        boolean isInInventory = inventoryList.containsKey(inventoryName);
+        boolean isInExpo = expositionControllerInstance.getExpoList().containsKey(inventoryName);
+        boolean isInInstitute = rentalControllerInstance.getInstituteList().containsKey(inventoryName);
+        if (isInInventory || isInInstitute || isInExpo) {
+            if (!artworkList.isEmpty()) {
+                Set<String> artKey = artworkList.keySet();
+                for (String artworks : artKey) {
+                    if (artworkList.get(artworks).getInventoryLocation().equalsIgnoreCase(inventoryName.toLowerCase())) {
+                        System.out.println(index + ". " + artworks);
+                    }
                 }
+            } else {
+                System.out.println("Artwork List is empty");
             }
         } else {
-            System.out.println("Empty List");
+            System.out.println("Location not found");
         }
     }
 
@@ -157,7 +166,6 @@ public class InventoryController {
                 }
             } else {
                 System.out.println("Storage is the default inventory. Can not be deleted.");
-                deleteInventory();
             }
         }
     }

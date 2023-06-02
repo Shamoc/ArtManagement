@@ -1,21 +1,18 @@
 package Controller;
 
 import Model.ArtWork;
-import Model.Expositon;
-import Model.Inventory;
 import Model.Rental;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
 public class RentalController {
 
     private LinkedHashMap<String, Rental> instituteList;
-    private static RentalController instituteListInstance = null;
+    private static RentalController instituteListInstance;
     private static ArtworkController artworkControllerInstance;
-    private LinkedHashMap<String, ArtWork> artworkList = artworkControllerInstance.getArtworkList();
+    private LinkedHashMap<String, ArtWork> artworkList;
 
     /**
      * Constructor for RentalController
@@ -25,7 +22,8 @@ public class RentalController {
     private RentalController() {
         this.instituteList = new LinkedHashMap<>();
         artworkControllerInstance = ArtworkController.getInstance();
-        Rental rental = new Rental("Default");
+        artworkList = artworkControllerInstance.getArtworkList();
+        Rental rental = new Rental("default");
         rental.setRentalStatus("Paid");
         rental.setRentalPrice(200);
         instituteList.put(rental.getRentalInstitution(),rental);
@@ -79,20 +77,32 @@ public class RentalController {
      * @param artWork Artwork to retrieve location of the Institute
      * @return The boolean flag of an Artwork rent status
      */
-    public boolean onActiveRent(ArtWork artWork) {
+    public boolean isOnRent(ArtWork artWork) {
         if (artWork != null) {
             String instContainsArt = artWork.getInventoryLocation();
             if (instContainsArt != null) {
-                if (!instituteList.containsKey(instContainsArt)) {
-                    return false;
-                }
-                Rental rental = instituteList.get(instContainsArt);
-                if (rental.getRentalStatus().equalsIgnoreCase("unpaid") || rental.getRentalStatus().equalsIgnoreCase("pending")) {
+                if (instituteList.containsKey(instContainsArt)) {
                     return true;
                 }
             }
         }
-        return true;
+        return false;
+    }
+
+    /**
+     *
+      */
+    public boolean isRentPaid(ArtWork artWork) {
+        if (artWork != null){
+            String instContainsArt = artWork.getInventoryLocation();
+            if (instContainsArt != null) {
+                Rental rental = instituteList.get(instContainsArt);
+                if (rental.getRentalStatus().equalsIgnoreCase("paid")) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -102,12 +112,12 @@ public class RentalController {
      */
     public void checkRentalStatus() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please select artwork: ");
-        showInstitutes();
+        System.out.println("Please select Artwork: ");
+        artworkControllerInstance.showArtworks();
         String selectedArt = scanner.next();
         ArtWork artWork = artworkList.get(selectedArt);
         if(artWork != null) {
-            if (onActiveRent(artWork)) {
+            if (isOnRent(artWork)) {
                 String rentalStatus = getInstituteList().get(artWork.getInventoryLocation()).getRentalStatus();
                 System.out.println(rentalStatus);
 
@@ -141,22 +151,15 @@ public class RentalController {
                     System.out.println("Rent has been fully paid");
                     return;
                 }
-                int halfRent = artworkRentPrice / 2;
-                if (halfRent % 2 != 0) {
-                    System.out.println("Rent can only be fully paid. No more half rents.");
-                }
-                System.out.println("Please select how much you want to pay from the following options: \n 1. Full Rent \n 2. Half Rent");
+                System.out.println("Please select how much you want to pay from the following options: \n 1. Full Rent \n 2. Partial Payment");
                 int userChoice = scanner.nextInt();
-                if (halfRent % 2 != 0) {
-                    userChoice = 1;
-                }
                 switch (userChoice) {
                     case 1:
                         done = false;
                         while (!done) {
-                            System.out.println("Please enter the amount to pay");
+                            System.out.println("Please enter funds: ");
                             int userMoney = scanner.nextInt();
-                            if (userMoney > artworkRentPrice) {
+                            if (userMoney >= artworkRentPrice) {
                                 System.out.println("Your change is: " + (userMoney - artworkRentPrice));
                                 done = true;
                             } else if (userMoney < artworkRentPrice) {
@@ -170,20 +173,32 @@ public class RentalController {
                         break;
                     case 2:
                         done = false;
+                        int userPayment = 0;
                         while (!done) {
-                            System.out.println("Please enter the amount to pay");
+                            while (!done) {
+                                System.out.println("Please enter the amount to pay: \n Can not be full or more than debt.");
+                                userPayment = scanner.nextInt();
+                                if (userPayment >= artworkRentPrice) {
+                                    System.out.println("Please enter a valid amount. Try again");
+                                } else {
+                                    done = true;
+                                }
+                            }
+                            done = false;
+                            System.out.println("Please enter funds: ");
                             int userMoney = scanner.nextInt();
-                            if (userMoney > halfRent) {
-                                System.out.println("Your change is: " + (userMoney - halfRent));
+                            if (userMoney > userPayment) {
+                                System.out.println("Your change is: " + (userMoney - userPayment));
                                 done = true;
-                            } else if (userMoney < halfRent) {
+                            } else if (userMoney < userPayment) {
                                 System.out.println("Insufficient Payment. Please try again");
                             }
+
                         }
                         System.out.println("Rent has been paid");
                         instituteList.get(artworkLocation).setRentalStatus("pending");
-                        int nwDebt = halfRent / 2;
-                        instituteList.get(artworkLocation).setPendingRental(nwDebt);
+                        int remainingDebt = artworkRentPrice - userPayment;
+                        instituteList.get(artworkLocation).setPendingRental(remainingDebt);
                         done = true;
                         break;
                     default:
@@ -240,15 +255,19 @@ public class RentalController {
      */
     public void deleteInstitute() {
         Scanner scanner = new Scanner(System.in);
+        if (!instituteList.isEmpty()) {
             System.out.println("Institute to delete: ");
             showInstitutes();
             String instName = scanner.next();
-        if (instituteList.containsKey(instName.toLowerCase())) {
-            instituteList.remove(instName.toLowerCase());
-            System.out.println("Success! Institute " + instName.toLowerCase() + " was deleted");
+            if (instituteList.containsKey(instName.toLowerCase())) {
+                instituteList.remove(instName.toLowerCase());
+                System.out.println("Success! Institute " + instName.toLowerCase() + " was deleted");
+            } else {
+                System.out.println("Exposition not found. Please type the exact name");
+                deleteInstitute();
+            }
         } else {
-            System.out.println("Exposition not found. Please type the exact name");
-            deleteInstitute();
+            System.out.println("Empty list");
         }
     }
 

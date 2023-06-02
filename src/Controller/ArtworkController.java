@@ -9,6 +9,8 @@ import java.util.Set;
 
 public class ArtworkController {
     private LinkedHashMap<String, ArtWork> artworkList;
+    private static RentalController instituteListInstance;
+    private static ExpositionController expoListInstance;
 
     private static ArtworkController artworkListInstance = null;
 
@@ -18,6 +20,7 @@ public class ArtworkController {
      * @see ArtWork
      */
     private ArtworkController (){
+
         this.artworkList = new LinkedHashMap<>();
         ArtWork artWork = new ArtWork("mona","lisa","leonardo da vinci", 1850,"renaissance","storage");
         artworkList.put(artWork.getName(), artWork);
@@ -28,24 +31,28 @@ public class ArtworkController {
      */
     public void artworkDetails() {
         Scanner scanner = new Scanner(System.in);
-        showArtworks();
-        System.out.println("Select Artwork: ");
-        String artworkName = scanner.next();
-        if(!Utils.isNumeric(artworkName)) {
-            ArtWork artwork = artworkList.get(artworkName);
-            if(artwork != null) {
-                System.out.println("Name: " + artwork.getName());
-                System.out.println("Description: " + artwork.getDescription());
-                System.out.println("Author: " + artwork.getAuthor());
-                System.out.println("Art style: " + artwork.getArtStyle());
-                System.out.println("Adquisition year: " + artwork.getAdquisitionYear());
+        if (!artworkList.isEmpty()) {
+            showArtworks();
+            System.out.println("Select Artwork: ");
+            String artworkName = scanner.next();
+            if (!Utils.isNumeric(artworkName)) {
+                ArtWork artwork = artworkList.get(artworkName);
+                if (artwork != null) {
+                    System.out.println("Name: " + artwork.getName());
+                    System.out.println("Description: " + artwork.getDescription());
+                    System.out.println("Author: " + artwork.getAuthor());
+                    System.out.println("Art style: " + artwork.getArtStyle());
+                    System.out.println("Adquisition year: " + artwork.getAdquisitionYear());
+                } else {
+                    System.out.println("Artwork not found. Please input full name.");
+                    artworkDetails();
+                }
             } else {
-                System.out.println("Artwork not found. Please input full name.");
+                System.out.println("Provide the name. Please try again.");
                 artworkDetails();
             }
         } else {
-            System.out.println("Provide the name. Please try again.");
-            artworkDetails();
+            System.out.println("Empty List");
         }
     }
 
@@ -79,16 +86,33 @@ public class ArtworkController {
     /**
      * Method for the removal of an Artwork from the artworkList
      */
-    public void deleteArtwork(){
+    public void deleteArtwork() {
         Scanner scanner = new Scanner(System.in);
-        showArtworks();
-        System.out.println("Artwork name to delete: ");
-        String inventoryName = scanner.next();
-        if (artworkList.containsKey(inventoryName.toLowerCase())) {
-            artworkList.remove(inventoryName.toLowerCase());
-            System.out.println("Success! Artwork " + inventoryName + " deleted.");
+        instituteListInstance = RentalController.getInstance();
+        expoListInstance = ExpositionController.getInstance();
+        if (!artworkList.isEmpty()) {
+            showArtworks();
+            System.out.println("Artwork name to delete: ");
+            String artName = scanner.next();
+            ArtWork artWork = artworkList.get(artName);
+            if (artworkList.containsKey(artName.toLowerCase())) {
+                if (!expoListInstance.onActiveExpo(artWork)) {
+                    boolean isOnRent = instituteListInstance.isOnRent(artWork);
+                    boolean isRentPaid = isOnRent ? instituteListInstance.isRentPaid(artWork) : true;
+                    if (isRentPaid) {
+                        artworkList.remove(artName.toLowerCase());
+                        System.out.println("Success! Artwork " + artName + " deleted.");
+                    } else {
+                        System.out.println("Can not delete an Artwork while is being rented.");
+                    }
+                } else {
+                    System.out.println("Can not delete an Artwork while it is in an exposition.");
+                }
+            } else {
+                System.out.println("Artwork not found");
+            }
         } else {
-            System.out.println("Artwork not found");
+            System.out.println("Empty List");
         }
     }
 
