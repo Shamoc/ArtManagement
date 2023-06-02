@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b80c5ef-9b46-474b-a863-f01f3f3b6efb" name="Changes" comment="Added is not empty check in artworkDetails.&#10;Modified deleteArtowrk checks. &#10;Modified setArtworkInventory checks.&#10;Added isRentPaid method.&#10;Refactor onActiveRent to isOnRent.&#10;Modified isOnRent method.">
+    <list default="true" id="4b80c5ef-9b46-474b-a863-f01f3f3b6efb" name="Changes" comment="Updated updateExpoStatus method.&#10;Updated checkExpoStatus method.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ExpositionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExpositionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Expositon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Expositon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/ExpositionController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Controller/ExpositionController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Model/Expositon.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Model/Expositon.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -234,7 +234,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685418491002</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Updated updateExpoStatus method.&#10;Updated checkExpoStatus method.">
+      <created>1685644753904</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1685644753904</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -278,7 +285,8 @@
     <MESSAGE value="Fixed onActiveRent/Expo artwork != null." />
     <MESSAGE value="Added attribute artworkList." />
     <MESSAGE value="Added is not empty check in artworkDetails.&#10;Modified deleteArtowrk checks. &#10;Modified setArtworkInventory checks.&#10;Added isRentPaid method.&#10;Refactor onActiveRent to isOnRent.&#10;Modified isOnRent method." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added is not empty check in artworkDetails.&#10;Modified deleteArtowrk checks. &#10;Modified setArtworkInventory checks.&#10;Added isRentPaid method.&#10;Refactor onActiveRent to isOnRent.&#10;Modified isOnRent method." />
+    <MESSAGE value="Updated updateExpoStatus method.&#10;Updated checkExpoStatus method." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated updateExpoStatus method.&#10;Updated checkExpoStatus method." />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
