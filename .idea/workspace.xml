@@ -4,10 +4,34 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b80c5ef-9b46-474b-a863-f01f3f3b6efb" name="Changes" comment="Updated updateExpoStatus method.&#10;Updated checkExpoStatus method.">
+    <list default="true" id="4b80c5ef-9b46-474b-a863-f01f3f3b6efb" name="Changes" comment="DAO implementation for all models.">
+      <change afterPath="$PROJECT_DIR$/src/DB_Implementation/ArtworkDaoImplementation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/DB_Implementation/ExpositionDaoImplementation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/DB_Implementation/InstitutionDaoImplementation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/DB_Implementation/InventoryDaoImplementation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/DB_Implementation/RentalDaoImplementation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Model/Institution.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/ArtworkController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Controller/ArtworkController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/ExpositionController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Controller/ExpositionController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/InventoryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Controller/InventoryController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/RentalController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Controller/RentalController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Model/ArtWork.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Model/ArtWork.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Model/Expositon.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Model/Expositon.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Model/Inventory.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Model/Inventory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Model/Rental.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Model/Rental.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ArtworkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ArtworkController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ExpositionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExpositionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/InventoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/InventoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/RentalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RentalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/ArtWork.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Artwork.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Expositon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Expositon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Inventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Inventory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Rental.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Rental.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -286,7 +310,8 @@
     <MESSAGE value="Added attribute artworkList." />
     <MESSAGE value="Added is not empty check in artworkDetails.&#10;Modified deleteArtowrk checks. &#10;Modified setArtworkInventory checks.&#10;Added isRentPaid method.&#10;Refactor onActiveRent to isOnRent.&#10;Modified isOnRent method." />
     <MESSAGE value="Updated updateExpoStatus method.&#10;Updated checkExpoStatus method." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated updateExpoStatus method.&#10;Updated checkExpoStatus method." />
+    <MESSAGE value="DAO implementation for all models." />
+    <option name="LAST_COMMIT_MESSAGE" value="DAO implementation for all models." />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

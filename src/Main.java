@@ -2,11 +2,11 @@ import Controller.ArtworkController;
 import Controller.ExpositionController;
 import Controller.InventoryController;
 import Controller.RentalController;
+import Model.Artwork;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -14,7 +14,7 @@ public class Main {
     /**
      * Method for the Main Menu
      */
-    public static void mainMenu() {
+    public static void mainMenu() throws SQLException {
 
             boolean done = false;
             while (!done) {
@@ -27,10 +27,10 @@ public class Main {
                         artworkMenu();
                         break;
                     case 2:
-                        invMenu();
+                       invMenu();
                         break;
                     case 3:
-                        rentMenu();
+                       rentMenu();
                         break;
                     case 4:
                         expoMenu();
@@ -46,7 +46,7 @@ public class Main {
     /**
      * Method for the Artwork Menu
      */
-    public static void artworkMenu() {
+    public static void artworkMenu() throws SQLException {
             boolean done = false;
             while (!done) {
                 ArtworkController artInstance = ArtworkController.getInstance();
@@ -58,10 +58,10 @@ public class Main {
                         artInstance.artworkDetails();
                         break;
                     case 2:
-                        artInstance.createArtwork();
+                        //artInstance.createArtwork();
                         break;
                     case 3:
-                        artInstance.deleteArtwork();
+                        //artInstance.deleteArtwork();
                         break;
                     case 4:
                         mainMenu();
@@ -74,32 +74,32 @@ public class Main {
     /**
      * Method for the Inventory Menu
      */
-    public static void invMenu() {
+    public static void invMenu() throws SQLException {
             boolean done = false;
             while (!done) {
                 InventoryController invInstance = InventoryController.getInstance();
                 Scanner scanner = new Scanner(System.in);
-                System.out.println("Inventory Options: \n 1. Artwork in Inventory \n 2. Check Inventory details \n 3. Send Artwork to Inventory " +
+                System.out.println("Inventory Options: \n 1. Artwork in Inventory \n 2. Inventory details \n 3. Send Artwork to Inventory " +
                         "\n 4. Add Inventory " + "\n 5. Delete Inventory \n 6. Go back");
                 int usrartnum = scanner.nextInt();
                 switch (usrartnum) {
                     case 1:
-                        invInstance.showInventories();
+                       /* invInstance.showInventories();
                         System.out.println("Select Inventory");
                         String invName = scanner.next();
-                        invInstance.artworkInInventory(invName);
+                        invInstance.artworkInInventory(invName); */
                         break;
                     case 2:
                         invInstance.inventoryDetails();
                         break;
                     case 3:
-                        invInstance.setArtworkInventory();
+                       // invInstance.setArtworkInventory();
                         break;
                     case 4:
-                        invInstance.createInventory();
+                       // invInstance.createInventory();
                         break;
                     case 5:
-                        invInstance.deleteInventory();
+                       // invInstance.deleteInventory();
                         break;
                     case 6:
                         mainMenu();
@@ -112,39 +112,39 @@ public class Main {
     /**
      * Method for the Rent Menu
      */
-    public static void rentMenu() {
+    public static void rentMenu() throws SQLException {
             boolean done = false;
             while (!done) {
                 InventoryController invInstance = InventoryController.getInstance();
                 RentalController rentInstance = RentalController.getInstance();
                 Scanner scanner = new Scanner(System.in);
-                System.out.println("Rental Options: \n 1. Check Rental Status of an Artwork \n 2. Set Artwork for Rental \n 3. Pay Rental" +
+                System.out.println("Rental Options: \n 1. Institution Details \n 2. Set Artwork for Rental \n 3. Pay Rental" +
                         "\n 4. Add Institute \n 5. Delete Institute \n 6. Check Rented price of an Artwork \n 7. Artwork in Rent \n 8. Go back");
                 int usrartnum = scanner.nextInt();
                 switch (usrartnum) {
                     case 1:
-                        rentInstance.checkRentalStatus();
+                        rentInstance.instDetails();
                         break;
                     case 2:
-                        rentInstance.setArtworkForRental();
+                       // rentInstance.setArtworkForRental();
                         break;
                     case 3:
-                        rentInstance.rentalChangeStatus();
+                       // rentInstance.rentalChangeStatus();
                         break;
                     case 4:
-                        rentInstance.createInstitute();
+                       // rentInstance.createInstitute();
                         break;
                     case 5:
-                        rentInstance.deleteInstitute();
+                       // rentInstance.deleteInstitute();
                         break;
                     case 6:
-                        rentInstance.rentedPrice();
+                       // rentInstance.rentedPrice();
                         break;
                     case 7:
-                        rentInstance.showInstitutes();
+                       /* rentInstance.showInstitutes();
                         System.out.println("Select Institute");
                         String invName = scanner.next();
-                        invInstance.artworkInInventory(invName);
+                        invInstance.artworkInInventory(invName); */
                         break;
                     case 8:
                         mainMenu();
@@ -157,7 +157,7 @@ public class Main {
     /**
      * Method for the Exposition Menu
      */
-    public static void expoMenu() {
+    public static void expoMenu() throws SQLException {
             boolean done = false;
             while (!done) {
                 ExpositionController expoInstance = ExpositionController.getInstance();
@@ -170,29 +170,30 @@ public class Main {
                         expoInstance.createExpo();
                         break;
                     case 2:
-                        expoInstance.showExpositions();
+                       /* expoInstance.showExpositions();
                         System.out.println("Select Exposition");
                         String invName = scanner.next();
-                        invInstance.artworkInInventory(invName);
+                        invInstance.artworkInInventory(invName); */
                         break;
                     case 3:
-                        expoInstance.setArtworkExposition();
+                      //  expoInstance.setArtworkExposition();
                         break;
                     case 4:
-                        expoInstance.deleteExpo();
+                       // expoInstance.deleteExpo();
                         break;
                     case 5:
-                        expoInstance.checkExpoStatus();
+                       // expoInstance.checkExpoStatus();
                         break;
                     case 6:
-                        mainMenu();
+                        expoInstance.showExpositions();
                         break;
                     default:
                         System.out.println("That is not a valid option");
                 }
             }
         }
-        public static void main(String[] args) {
+
+        public static void main(String[] args) throws SQLException {
             Connection connection = null;
             try {
                 // below two lines are used for connectivity.
@@ -214,6 +215,8 @@ public class Main {
             catch (Exception exception) {
                 System.out.println(exception);
             }
-            mainMenu();
+
+
+               mainMenu();
         }
 }

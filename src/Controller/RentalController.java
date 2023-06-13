@@ -1,8 +1,14 @@
 package Controller;
 
-import Model.ArtWork;
+import DB_Implementation.InstitutionDaoImplementation;
+import DB_Implementation.InventoryDaoImplementation;
+import Model.Artwork;
+import Model.Institution;
+import Model.Inventory;
 import Model.Rental;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
 import java.util.Set;
@@ -12,7 +18,8 @@ public class RentalController {
     private LinkedHashMap<String, Rental> instituteList;
     private static RentalController instituteListInstance;
     private static ArtworkController artworkControllerInstance;
-    private LinkedHashMap<String, ArtWork> artworkList;
+    private LinkedHashMap<String, Artwork> artworkList;
+    private InstitutionDaoImplementation instDao;
 
     /**
      * Constructor for RentalController
@@ -21,6 +28,7 @@ public class RentalController {
      */
     private RentalController() {
         this.instituteList = new LinkedHashMap<>();
+        instDao = new InstitutionDaoImplementation();
         artworkControllerInstance = ArtworkController.getInstance();
         artworkList = artworkControllerInstance.getArtworkList();
         Rental rental = new Rental("default");
@@ -33,37 +41,36 @@ public class RentalController {
     /**
      * Method to set an Artwork for Rental
      *
-     * @see #showInstitutes()
-     * @see #setRentPrice(ArtWork) 
+     * @see #setRentPrice(Artwork)
      */
     public void setArtworkForRental() {
         ExpositionController expositionControllerInstance = ExpositionController.getInstance();
         Scanner scanner = new Scanner(System.in);
-        artworkControllerInstance.showArtworks();
+        //artworkControllerInstance.showArtworks();
         System.out.println("Select Artwork: ");
         String artworkName = scanner.next();
-        ArtWork artWork = artworkList.get(artworkName.toLowerCase());
+        Artwork artWork = artworkList.get(artworkName.toLowerCase());
         if (artWork != null) {
-            showInstitutes();
+            //showInstitutes();
             System.out.println("Select Institute: ");
             String artworkLocation = scanner.next();
             if (instituteList.containsKey(artworkLocation.toLowerCase())) {
-                boolean expoListTest = expositionControllerInstance.getExpoList().containsKey(artWork.getInventoryLocation());
+               /* boolean expoListTest = expositionControllerInstance.getExpoList().containsKey(artWork.getInv_id());
                 if (expoListTest) {
                     expoListTest = expositionControllerInstance.onActiveExpo(artWork);
                     if (!expoListTest) {
-                        artWork.setInventoryLocation(artworkLocation);
-                        System.out.println(artworkName + " will be rented by " + artWork.getInventoryLocation());
+                        //artWork.setInv_id(artworkLocation);
+                        System.out.println(artworkName + " will be rented by " + artWork.getInv_id());
                         setRentPrice(artWork);
                     } else {
-                        System.out.println(artworkName + " is not available for rental \n Location: " + artWork.getInventoryLocation());
+                        System.out.println(artworkName + " is not available for rental \n Location: " + artWork.getInv_id());
                         System.out.println("Artwork can not be sent for rental");
                     }
                 } else {
-                    artWork.setInventoryLocation(artworkLocation);
-                    System.out.println(artworkName + " will be rented by " + artWork.getInventoryLocation());
+                    //artWork.setInv_id(artworkLocation);
+                    System.out.println(artworkName + " will be rented by " + artWork.getInv_id());
                     setRentPrice(artWork);
-                }
+                } */
             }
         } else {
             System.out.println("Artwork not found. Try again");
@@ -77,14 +84,14 @@ public class RentalController {
      * @param artWork Artwork to retrieve location of the Institute
      * @return The boolean flag of an Artwork rent status
      */
-    public boolean isOnRent(ArtWork artWork) {
+    public boolean isOnRent(Artwork artWork) {
         if (artWork != null) {
-            String instContainsArt = artWork.getInventoryLocation();
+           /* String instContainsArt = artWork.getInv_id();
             if (instContainsArt != null) {
                 if (instituteList.containsKey(instContainsArt)) {
                     return true;
                 }
-            }
+            } */
         }
         return false;
     }
@@ -92,15 +99,15 @@ public class RentalController {
     /**
      *
       */
-    public boolean isRentPaid(ArtWork artWork) {
+    public boolean isRentPaid(Artwork artWork) {
         if (artWork != null){
-            String instContainsArt = artWork.getInventoryLocation();
+           /* String instContainsArt = artWork.getInv_id();
             if (instContainsArt != null) {
                 Rental rental = instituteList.get(instContainsArt);
                 if (rental.getRentalStatus().equalsIgnoreCase("paid")) {
                     return true;
                 }
-            }
+            }*/
         }
         return false;
     }
@@ -108,17 +115,16 @@ public class RentalController {
     /**
      * Method to determine if an Artwork is being rented
      *
-     * @see #showInstitutes()
      */
     public void checkRentalStatus() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please select Artwork: ");
-        artworkControllerInstance.showArtworks();
+        //artworkControllerInstance.showArtworks();
         String selectedArt = scanner.next();
-        ArtWork artWork = artworkList.get(selectedArt);
+        Artwork artWork = artworkList.get(selectedArt);
         if(artWork != null) {
             if (isOnRent(artWork)) {
-                String rentalStatus = getInstituteList().get(artWork.getInventoryLocation()).getRentalStatus();
+               String rentalStatus = getInstituteList().get(artWork.getInv_id()).getRentalStatus();
                 System.out.println(rentalStatus);
 
             } else {
@@ -137,10 +143,10 @@ public class RentalController {
     public void rentalChangeStatus() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please select the Artwork: ");
-        artworkControllerInstance.showArtworks();
+        //artworkControllerInstance.showArtworks();
         String artworkName = scanner.next();
-        ArtWork artwork = artworkList.get(artworkName.toLowerCase());
-        String artworkLocation = artwork.getInventoryLocation();
+        Artwork artwork = artworkList.get(artworkName.toLowerCase());
+       /* String artworkLocation = artwork.getInv_id();
         if (artworkLocation != null) {
             int artworkRentPrice = instituteList.get(artworkLocation).getPendingRental();
             boolean done = false;
@@ -208,7 +214,7 @@ public class RentalController {
         } else {
             System.out.println("Artwork not found. Please try again");
             rentalChangeStatus();
-        }
+        } */
     }
 
     /**
@@ -217,10 +223,10 @@ public class RentalController {
     public void rentedPrice() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please select the Artwork: ");
-        artworkControllerInstance.showArtworks();
+        //artworkControllerInstance.showArtworks();
         String artworkName = scanner.next();
-        ArtWork artwork = artworkList.get(artworkName.toLowerCase());
-        String artworkLocation = artwork.getInventoryLocation();
+        Artwork artwork = artworkList.get(artworkName.toLowerCase());
+       /* String artworkLocation = artwork.getInv_id();
         if (artworkLocation != null) {
             System.out.println("Renting Institution: " + artworkLocation);
             int artworkRentPrice = instituteList.get(artworkLocation).getRentalPrice();
@@ -228,7 +234,7 @@ public class RentalController {
         } else {
             System.out.println("Artwork not found. Please try again");
             rentedPrice();
-        }
+        } */
     }
 
     /**
@@ -249,15 +255,34 @@ public class RentalController {
     }
 
     /**
+     * Method to print Institution details.
+     *
+     * @throws SQLException
+     */
+    public void instDetails() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        showInstitutes();
+        System.out.println("Select Institution: ");
+        int instID = scanner.nextInt();
+        Institution inv = instDao.getInst(instID);
+        if (inv!=null) {
+            System.out.println("Institution: " + inv.getInstName());
+            System.out.println("Institution address: " + inv.getInstAddress());
+        } else {
+            System.out.println("Institution not found. Please try again");
+            instDetails();
+        }
+    }
+
+    /**
      * Method to delete an Institute and remove it from instituteList
      *
-     * @see #showInstitutes()
      */
     public void deleteInstitute() {
         Scanner scanner = new Scanner(System.in);
         if (!instituteList.isEmpty()) {
             System.out.println("Institute to delete: ");
-            showInstitutes();
+            //showInstitutes();
             String instName = scanner.next();
             if (instituteList.containsKey(instName.toLowerCase())) {
                 instituteList.remove(instName.toLowerCase());
@@ -294,12 +319,12 @@ public class RentalController {
     /**
      * Method to print all the Institutes in instituteList
      */
-    public void showInstitutes() {
-        if (!instituteList.isEmpty()) {
-            Set<String> instkey = instituteList.keySet();
+    public void showInstitutes() throws SQLException {
+        if (!instDao.getInstitution().isEmpty()) {
             int index = 1;
-            for (String artworks : instkey) {
-                System.out.println(index + ". " + artworks);
+            for (Institution inst : instDao.getInstitution()) {
+                System.out.println(index + ". " + inst.getInstName());
+                index++;
             }
         } else {
             System.out.println("Institutions List is empty");
@@ -311,16 +336,16 @@ public class RentalController {
      * 
      * @param artWork Determines which artwork to set
      */
-    private void setRentPrice(ArtWork artWork) {
+    private void setRentPrice(Artwork artWork) {
         Scanner scanner = new Scanner(System.in);
         boolean done = false;
         while (!done) {
             System.out.println("Set rent price. (No cents)");
             int artRentPrice = scanner.nextInt();
             if (artRentPrice > 0) {
-                instituteList.get(artWork.getInventoryLocation()).setRentalPrice(artRentPrice);
-                instituteList.get(artWork.getInventoryLocation()).setPendingRental(artRentPrice);
-                instituteList.get(artWork.getInventoryLocation()).setRentalStatus("unpaid");
+                instituteList.get(artWork.getInv_id()).setRentalPrice(artRentPrice);
+                instituteList.get(artWork.getInv_id()).setPendingRental(artRentPrice);
+                instituteList.get(artWork.getInv_id()).setRentalStatus("unpaid");
                 done = true;
             } else {
                 System.out.println("Error price can not be 0 or lower. \n Try again. ");
