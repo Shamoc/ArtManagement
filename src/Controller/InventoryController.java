@@ -4,35 +4,33 @@ import DB_Implementation.InventoryDaoImplementation;
 import Model.Artwork;
 import Model.Inventory;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
 public class InventoryController {
 
-    private LinkedHashMap<String, Inventory> inventoryList;
+    private List<Inventory> inventoryList;
     private static InventoryController inventoryListInstance = null;
     private static ArtworkController artworkControllerInstance;
     private static RentalController rentalControllerInstance;
     private static ExpositionController expositionControllerInstance;
-    private LinkedHashMap<String, Artwork> artworkList;
+    private List<Artwork> artworkList;
     private static InventoryDaoImplementation invDao;
 
 
     /**
      * Method constructor for InventoryController Class
      */
-    private InventoryController() {
-        invDao = new InventoryDaoImplementation();
-        this.inventoryList = new LinkedHashMap<>();
+    private InventoryController() throws SQLException {
+        invDao = InventoryDaoImplementation.getInstance();
         artworkControllerInstance = ArtworkController.getInstance();
         rentalControllerInstance = RentalController.getInstance();
         expositionControllerInstance = ExpositionController.getInstance();
         artworkList = artworkControllerInstance.getArtworkList();
-        Inventory defaultInventory = new Inventory("storage", "storage");
-        getInventoryList().put(defaultInventory.getInventoryName(), defaultInventory);
+        this.inventoryList = invDao.getInventory();
     }
 
     /**
@@ -45,7 +43,8 @@ public class InventoryController {
         showInventories();
         System.out.println("Select Inventory: ");
         int invID = scanner.nextInt();
-        Inventory inv = invDao.getInv(invID);
+        List<Inventory> invList = invDao.getInventory();
+        Inventory inv = invList.get(invID - 1);
         if (inv!=null) {
             System.out.println("Inventory: " + inv.getInventoryName());
             System.out.println("Inventory address: " + inv.getInventoryAddress());
@@ -65,13 +64,13 @@ public class InventoryController {
         Scanner scanner = new Scanner(System.in);
         artworkControllerInstance.showArtworks();
         System.out.println("Select Artwork: ");
-        String artworkName = scanner.next();
-        Artwork artWork = artworkList.get(artworkName.toLowerCase());
+        int artworkID = scanner.nextInt();
+        Artwork artWork = artworkList.get(artworkID);
         if(artWork!=null) {
             System.out.println("Select destination: ");
             //showInventories();
             String artworkLocation = scanner.next();
-            if (inventoryList.containsKey(artworkLocation)) {
+            if (inventoryList.contains(artworkLocation)) {
                /* InstituteLocation = rentalControllerInstance.getInstituteList().containsKey(artWork.getInv_id());
                 boolean isExpoLocation = expositionControllerInstance.getExpoList().containsKey(artWork.getInv_id());
                 if (isInstituteLocation || isExpoLocation) {
@@ -80,14 +79,14 @@ public class InventoryController {
                     boolean isRentPaid = isOnRent ? rentalControllerInstance.isRentPaid(artWork) : true;
                     if (isRentPaid && !isExpoActive) {
                         //artWork.setInv_id(artworkLocation);
-                        System.out.println(artworkName + " will be sent to inventory " + artWork.getInv_id());
+                        System.out.println(artworkID + " will be sent to inventory " + artWork.getInv_id());
                     } else {
-                        System.out.println(artworkName + " is located in: " + artWork.getInv_id());
+                        System.out.println(artworkID + " is located in: " + artWork.getInv_id());
                         System.out.println("Artwork can not be put into inventory \n Check Rental or Expo status");
                     }
                 } else {
                     //artWork.setInv_id(artworkLocation);
-                    System.out.println(artworkName + " will be sent to inventory " + artWork.getInv_id());
+                    System.out.println(artworkID + " will be sent to inventory " + artWork.getInv_id());
                 }
             } else {
                 System.out.println("Inventory not found. Please input the exact name");
@@ -106,13 +105,12 @@ public class InventoryController {
      */
     public void artworkInInventory(String inventoryName) {
         int index = 1;
-        boolean isInInventory = inventoryList.containsKey(inventoryName);
-        boolean isInExpo = expositionControllerInstance.getExpoList().containsKey(inventoryName);
-        boolean isInInstitute = rentalControllerInstance.getInstituteList().containsKey(inventoryName);
+        boolean isInInventory = inventoryList.contains(inventoryName);
+        boolean isInExpo = expositionControllerInstance.getExpoList().contains(inventoryName);
+        boolean isInInstitute = rentalControllerInstance.getInstituteList().contains(inventoryName);
         if (isInInventory || isInInstitute || isInExpo) {
             if (!artworkList.isEmpty()) {
-                Set<String> artKey = artworkList.keySet();
-                for (String artworks : artKey) {
+                for (Artwork artworks : artworkList) {
                     //if (artworkList.get(artworks).getInv_id().equalsIgnoreCase(inventoryName.toLowerCase())) {
                         System.out.println(index + ". " + artworks);
                     //}
@@ -128,16 +126,18 @@ public class InventoryController {
     /**
      * Method for the creation of an Inventory
      */
-    public void createInventory() {
+    public void createInventory() throws SQLException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Inventory name: ");
+        System.out.println("CREATE INVENTORY \n Inventory name: ");
         String inventoryName = scanner.next();
         System.out.println("Inventory Address: ");
         String inventoryAddress = scanner.next();
-        if (!inventoryList.containsKey(inventoryName.toLowerCase())) {
-            Inventory inventory = new Inventory(inventoryName.toLowerCase(), inventoryAddress);
-            getInventoryList().put(inventory.getInventoryName(), inventory);
-            System.out.println("Success! Inventory " + inventoryName + " created.");
+
+        Inventory inventory = new Inventory(inventoryName, inventoryAddress);
+
+        if (!inventoryList.contains(inventory)) {
+            invDao.add(inventory);
+            System.out.println("Success! Inventory " + inventory.getInventoryName() + " created.");
         } else {
             System.out.println("Name already in use. Try again");
             createInventory();
@@ -162,8 +162,8 @@ public class InventoryController {
             System.out.println("Can not continue until the inventory is empty");
         } else {
             if (!inventoryName.equalsIgnoreCase("storage")) {
-                if (inventoryList.containsKey(inventoryName.toLowerCase())) {
-                    inventoryList.remove(inventoryName.toLowerCase());
+                if (inventoryList.contains(inventoryName)) {
+                    inventoryList.remove(inventoryName);
                     System.out.println("Success! Inventory " + inventoryName + " has been deleted.");
                 } else {
                     System.out.println("Inventory not found. Type the exact inventory name");
@@ -199,7 +199,11 @@ public class InventoryController {
      */
     public static InventoryController getInstance() {
         if (inventoryListInstance == null) {
-            inventoryListInstance = new InventoryController();
+            try {
+                inventoryListInstance = new InventoryController();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
         return inventoryListInstance;
     }
@@ -209,7 +213,7 @@ public class InventoryController {
      *
      * @return inventoryList
      */
-    public LinkedHashMap<String, Inventory> getInventoryList() {
+    public List<Inventory> getInventoryList() {
         return inventoryList;
     }
 
@@ -220,8 +224,7 @@ public class InventoryController {
      * @return Flag when an Artwork is found in the provided inventory
      */
     private boolean inventoryHasArtwork(String inventory) {
-        Set<String> artKey = artworkList.keySet();
-        for (String artworks : artKey) {
+        for (Artwork artworks : artworkList) {
             /*if (artworkList.get(artworks).getInv_id()) {
                 return true;
             }*/

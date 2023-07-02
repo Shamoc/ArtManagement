@@ -7,7 +7,7 @@ public class Expositon {
     private int expo_id;
     private String expoName;
     private String expoDescription;
-    private boolean expoCompleteStatus;
+    private String expoStatus;
     private java.sql.Date startDate;
     private java.sql.Date endDate;
 
@@ -15,7 +15,7 @@ public class Expositon {
     public Expositon(String expoName, String expoDescription) {
         this.expoName = expoName;
         this.expoDescription = expoDescription;
-        this.setExpoCompleteStatus(expoCompleteStatus);
+        this.setExpoStatus(expoStatus);
     }
 
     public String getExpoName() {
@@ -34,12 +34,12 @@ public class Expositon {
         this.expoDescription = expoDescription;
     }
 
-    public Boolean getExpoCompleteStatus() {
-        return expoCompleteStatus;
+    public String getExpoStatus() {
+        return expoStatus;
     }
 
-    public void setExpoCompleteStatus(Boolean expoCompleteStatus) {
-        this.expoCompleteStatus = expoCompleteStatus;
+    public void setExpoStatus(String expoStatus) {
+        this.expoStatus = expoStatus;
     }
 
     public java.sql.Date getStartDate() {

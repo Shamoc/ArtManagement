@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InventoryDaoImplementation {
+    private static InventoryDaoImplementation invInstance;
     static Connection con = null;
     static {
         try {
@@ -104,5 +105,12 @@ public class InventoryDaoImplementation {
         ps.setString(2, inv.getInventoryAddress());
         ps.setInt(3, inv.getInv_id());
         ps.executeUpdate();
+    }
+
+    public static InventoryDaoImplementation getInstance() {
+        if (invInstance == null) {
+            invInstance = new InventoryDaoImplementation();
+        }
+        return invInstance;
     }
 }

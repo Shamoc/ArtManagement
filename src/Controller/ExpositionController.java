@@ -1,10 +1,10 @@
 package Controller;
 
+import DB_Implementation.ArtworkDaoImplementation;
 import DB_Implementation.ExpositionDaoImplementation;
 import Model.Artwork;
 import Model.Expositon;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,20 +12,22 @@ import java.util.*;
 
 public class ExpositionController {
 
-    private LinkedHashMap<String, Expositon> expoList;
-    private static ExpositionController expoListInstance;
-    private static ArtworkController artworkControllerInstance;
-    private LinkedHashMap<String, Artwork> artworkList;
+    private List<Expositon> expoList;
+    private static ExpositionController expoInstance;
+    private static ArtworkController artInstance;
+    private List<Artwork> artworkList;
+    private static ArtworkDaoImplementation artDao;
     private static ExpositionDaoImplementation expoDao;
 
     /**
      * ExpositionController constructor
      */
-    private ExpositionController(){
-        this.expoList = new LinkedHashMap<>();
-        expoDao = new ExpositionDaoImplementation();
-        artworkControllerInstance = ArtworkController.getInstance();
-        artworkList = artworkControllerInstance.getArtworkList();
+    private ExpositionController() throws SQLException {
+        artDao = ArtworkDaoImplementation.getInstance();
+        expoDao = ExpositionDaoImplementation.getInstance();
+        artInstance = ArtworkController.getInstance();
+        artworkList = artDao.getArtForExpo();
+        this.expoList = expoDao.getExposition();
         Expositon expositon = new Expositon("exhibition","World Fair");
         String dateEn =  "2010/12/5";
         String dateSt = "2000/1/5";
@@ -41,142 +43,64 @@ public class ExpositionController {
         java.sql.Date dateStartsql = new java.sql.Date(dateStart.getTime());
         expositon.setEndDate(datesql);
         expositon.setStartDate(dateStartsql);
-        expoList.put(expositon.getExpoName(), expositon);
     }
 
     /**
      * Method to set an Artwork to an Exposition
      *
-     * @see #artworkControllerInstance
+     * @see #artInstance
      */
-    public void setArtworkExposition() {
-        RentalController rentalControllerInstance = RentalController.getInstance();
+    public void setArtworkExposition() throws SQLException {
         Scanner scanner = new Scanner(System.in);
-        //artworkControllerInstance.showArtworks();
+        showArtForExpo();
+        List<Artwork> artsList = artDao.getArtForExpo();
         System.out.println("Select Artwork: ");
-        String artworkName = scanner.next();
-        Artwork artWork = artworkList.get(artworkName.toLowerCase());
+        int artworkID = scanner.nextInt();
+        Artwork artWork = artsList.get(artworkID - 1);
         if (artWork != null) {
-            //showExpositions();
+            showExpositions();
             System.out.println("Select Exposition: ");
-            String expoName = scanner.next();
-            if (expoList.containsKey(expoName.toLowerCase())) {
-                /*if(!artWork.getInv_id().equalsIgnoreCase(expoName.toLowerCase())) {
-                    boolean rentalListTest = rentalControllerInstance.getInstituteList().containsKey(artWork.getInv_id());
-                    Expositon expo = expoList.get(expoName);
-                    boolean expoStatusTest = expo.getExpoCompleteStatus();
-                    if (rentalListTest || expoStatusTest) {
-                        rentalListTest = rentalControllerInstance.isOnRent(artWork);
-                        if (!rentalListTest) {
-                            //artWork.setInv_id(expoName.toLowerCase());
-                            System.out.println(artworkName + " will be added to the exposition " + artWork.getInv_id());
-                        } else {
-                            System.out.println(artworkName + " is not available for exhibition \n Location: " + artWork.getInv_id());
-                            System.out.println("Artwork can not be exhibit");
-                        }
-                    } else if (expoStatusTest) {
-                        //artWork.setInv_id(expoName.toLowerCase());
-                        System.out.println(artworkName + " will be added to the exposition " + artWork.getInv_id());
-                    } else {
-                        System.out.println("Exposition its completed. Can not add Artwork");
-                    }
+            int userExpo = scanner.nextInt();
+            Expositon expo = expoList.get(userExpo - 1);
+            if (expo != null) {
+                updateExpoStatus(expo);
+                if (expo.getExpoStatus().equalsIgnoreCase("Active")) {
+                    artDao.updateArtToExpo(artWork.getArt_id(), expo.getExpo_id());
+                    System.out.println("Success");
                 } else {
-                    System.out.println("Artwork is already added to " + expoName.toLowerCase());
-                } */
-            } else {
-                System.out.println("Exposition not found. Try again");
-                setArtworkExposition();
+                    System.out.println("Exposition is not active");
                 }
-        } else {
-            System.out.println("Artwork not found. Try again");
-            setArtworkExposition();
-        }
-    }
-
-    /**
-     * Method to determine if an Artwork is exhibited in an exposition
-     * and the exposition status of the Exposition the Artwork is in
-     *
-     * @param artWork Artwork used to locate the Exposition
-     * @see #updateExpoStatus(String)
-     * @return Determines if the Exposition of an Artwork is true or false
-     */
-    public boolean onActiveExpo(Artwork artWork) {
-        if (artWork != null) {
-            /*String expoContainsArt = artWork.getInv_id();
-            if (!expoList.containsKey(expoContainsArt.toLowerCase())) {
-                return false;
             }
-            Expositon expositon = expoList.get(expoContainsArt.toLowerCase());
-            updateExpoStatus(expositon.getExpoName().toLowerCase());
-            if (expositon.getExpoCompleteStatus()) {
-                return true;
-            } */
-        }
-        return false;
-    }
-
-    /**
-     * Method to determine the status of an Exposition
-     *
-     * @see #updateExpoStatus(String)
-     */
-    public void checkExpoStatus() {
-        Scanner scanner = new Scanner(System.in);
-       // showExpositions();
-        System.out.println("Select Exposition: ");
-        String expoName = scanner.next();
-        if (expoList.containsKey(expoName.toLowerCase())) {
-            updateExpoStatus(expoName.toLowerCase());
-            Date currentDate = new Date();
-            Date start = expoList.get(expoName.toLowerCase()).getStartDate();
-            Date end = expoList.get(expoName.toLowerCase()).getEndDate();
-            if (start.after(currentDate)) {
-                if (expoList.get(expoName.toLowerCase()).getExpoCompleteStatus()) {
-                    System.out.println("Starting: " + expoList.get(expoName.toLowerCase()).getStartDate());
-                }
-            } else if (start.before(currentDate)) {
-                if (end.after(currentDate)) {
-                    System.out.println("Status: Active");
-                } else {
-                    System.out.println("Status: Completed");
-                }
-                System.out.println("Starting Date: " + expoList.get(expoName.toLowerCase()).getStartDate());
-                System.out.println("Ending Date: " + expoList.get(expoName.toLowerCase()).getEndDate());
-            }
-        } else {
-            System.out.println("Exposition not found. Please try again");
-            checkExpoStatus();
         }
     }
 
     /**
      * Method to create an Exposition
      *
-     * @see #updateExpoStatus(String)
      */
-    public void createExpo(){
+    public void createExpo() throws SQLException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Exposition name: ");
+        System.out.println("CREATE EXPO \n Exposition name: ");
         String expoName = scanner.next();
         System.out.println("Exposition description: ");
         String expoDes = scanner.next();
-        if (!expoList.containsKey(expoName.toLowerCase())) {
-            Expositon expo = new Expositon(expoName.toLowerCase(), expoDes);
-            this.expoList.put(expo.getExpoName(), expo);
+        Expositon expositon = new Expositon(expoName, expoDes);
+        if (!expoList.contains(expositon)) {
             boolean done = false;
             while (!done) {
-                System.out.println("Select starting date");
+                System.out.println("Select STARTING DATE");
                 java.sql.Date startingDate = dateConfiguration();
-                System.out.println("Select ending date");
+                System.out.println("Select ENDING DATE");
                 java.sql.Date endingDate = dateConfiguration();
                 if (startingDate.after(endingDate)) {
                     System.out.println("Error! Starting date can not be after ending date.");
                 } else {
-                    expo.setStartDate(startingDate);
-                    expo.setEndDate(endingDate);
-                    updateExpoStatus(expo.getExpoName());
-                    System.out.println("Success! Exposition " + expoName + " created.");
+                    expositon.setStartDate(startingDate);
+                    expositon.setEndDate(endingDate);
+                    updateExpoStatus(expositon);
+                    expoDao.add(expositon);
+
+                    System.out.println("Success! Exposition " + expositon.getExpoName() + " created.");
                     done = true;
                 }
             }
@@ -188,26 +112,51 @@ public class ExpositionController {
     }
 
     /**
+     * Method for the print of an Exposition details.
+     *
+     * @throws SQLException
+     */
+    public void expoDetails() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        showExpositions();
+        System.out.println("Select Exposition: ");
+        int expoID = scanner.nextInt();
+        List<Expositon> expoList = expoDao.getExposition();
+        Expositon expo = expoList.get(expoID - 1);
+        updateExpoStatus(expo);
+        if (expo!=null) {
+            System.out.println("Exposition: " + expo.getExpoName());
+            System.out.println("Exposition description: " + expo.getExpoDescription());
+            System.out.println("Exposition status: " + expo.getExpoStatus());
+            System.out.println("Exposition start date: " + expo.getStartDate());
+            System.out.println("Exposition end date: " + expo.getEndDate());
+        } else {
+            System.out.println("Exposition not found. Please try again");
+            expoDetails();
+        }
+    }
+
+    /**
      * Method for the deletion of an Exposition
      *
-     * @see #updateExpoStatus(String)
      */
-    public void deleteExpo() {
+    public void deleteExpo() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         if (!expoList.isEmpty()) {
-            //showExpositions();
-            System.out.println("Exposition name to delete: ");
-            String expoName = scanner.next();
-            if (expoList.containsKey(expoName.toLowerCase())) {
-                updateExpoStatus(expoName.toLowerCase());
-                if (!expoList.get(expoName.toLowerCase()).getExpoCompleteStatus()) {
-                    expoList.remove(expoName.toLowerCase());
-                    System.out.println("Exposition " + expoName.toLowerCase() + " has been deleted.");
+            showExpositions();
+            System.out.println("Exposition to delete: ");
+            int expoID = scanner.nextInt();
+            Expositon expo = expoList.get(expoID - 1);
+            if (expo != null) {
+                updateExpoStatus(expo);
+                if (expo.getExpoStatus().equalsIgnoreCase("Completed")) {
+                    expoDao.delete(expo.getExpo_id());
+                    System.out.println("Exposition " + expo.getExpoName() + " has been deleted.");
                 } else {
                     System.out.println("Exposition is Active. Can not be Deleted.");
                 }
             } else {
-                System.out.println("Exposition not found. Please type the exact name");
+                System.out.println("Exposition not found");
                 deleteExpo();
             }
         } else {
@@ -220,17 +169,21 @@ public class ExpositionController {
      * @return The same ExpositionController instance
      */
     public static ExpositionController getInstance() {
-        if (expoListInstance == null) {
-            expoListInstance = new ExpositionController();
+        if (expoInstance == null) {
+            try {
+                expoInstance = new ExpositionController();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
-        return expoListInstance;
+        return expoInstance;
     }
 
     /**
      * Method to access the expoList
      * @return expoList
      */
-    public LinkedHashMap<String, Expositon> getExpoList() {
+    public List<Expositon> getExpoList() {
         return expoList;
     }
 
@@ -255,7 +208,7 @@ public class ExpositionController {
      * @return Date
      */
     private java.sql.Date dateConfiguration() {
-        java.sql.Date a = null;
+        Date a = null;
         try {
             Scanner scanner = new Scanner(System.in);
             int startYear = 1;
@@ -298,7 +251,7 @@ public class ExpositionController {
                 dateConfiguration();
             }
             try {
-                a = (java.sql.Date) new SimpleDateFormat("yyyy/MM/dd").parse(date);
+                a = new SimpleDateFormat("yyyy/MM/dd").parse(date);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -306,26 +259,48 @@ public class ExpositionController {
             System.out.println("Please enter only numbers");
             dateConfiguration();
         }
-        return a;
+        java.sql.Date dateSql = new java.sql.Date(a.getTime());
+        return dateSql;
     }
 
     /**
      * Updates the status of an Exposition according to current Date
      *
-     * @param expoName String to locate the Exposition to update its status
      */
-    private void updateExpoStatus(String expoName) {
-       Date currentDate = new Date();
-       Date end = expoList.get(expoName.toLowerCase()).getEndDate();
-       Date start = expoList.get(expoName.toLowerCase()).getStartDate();
+    private void updateExpoStatus(Expositon expo) throws SQLException {
+        Date nowDate = new Date();
+        java.sql.Date currentDate = new java.sql.Date(nowDate.getTime());
+        Date end = expo.getEndDate();
+        Date start = expo.getStartDate();
         if (start.before(currentDate)) {
             if (end.after(currentDate)) {
-                expoList.get(expoName.toLowerCase()).setExpoCompleteStatus(true);
+                expoDao.update(expo);
+                expo.setExpoStatus("Active");
             } else {
-                expoList.get(expoName.toLowerCase()).setExpoCompleteStatus(false);
+                expoDao.update(expo);
+                artDao.updateArtToInvFromExpo(expo.getExpo_id());
+                expo.setExpoStatus("Completed");
             }
         } else if (start.after(currentDate)) {
-            expoList.get(expoName.toLowerCase()).setExpoCompleteStatus(true);
+            expoDao.update(expo);
+            expo.setExpoStatus("Active");
+        }
+    }
+
+    /**
+     * Method to print all the Artwork available for Exposition
+     *
+     * @throws SQLException
+     */
+    public void showArtForExpo() throws SQLException {
+        if (!artworkList.isEmpty()) {
+            int index = 1;
+            for (Artwork artworks : artDao.getArtForExpo()) {
+                System.out.println(index + ". " + artworks.getName());
+                index++;
+            }
+        } else {
+            System.out.println("Empty List");
         }
     }
 }

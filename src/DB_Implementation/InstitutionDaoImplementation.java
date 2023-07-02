@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InstitutionDaoImplementation {
+    private static InstitutionDaoImplementation instInstance;
     static Connection con = null;
     static {
         try {
@@ -72,6 +73,26 @@ public class InstitutionDaoImplementation {
             return null;
     }
 
+    public List<Institution> rentedInstitutions() throws SQLException {
+
+        String query = "select institution.id, institution.name from institution inner join rent on institution.id = rent.inst_id \n" +
+                "group by institution.id, institution.name;";
+        PreparedStatement ps
+                = con.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        List<Institution> ls = new ArrayList();
+
+        while (rs.next()) {
+            Institution inst = new Institution();
+            inst.setInst_id(rs.getInt("id"));
+            inst.setInstName(rs.getString("name"));
+            ls.add(inst);
+        }
+
+        return ls;
+
+    }
+
     public List<Institution> getInstitution()
             throws SQLException
     {
@@ -104,5 +125,12 @@ public class InstitutionDaoImplementation {
         ps.setString(2, inst.getInstAddress());
         ps.setInt(3, inst.getInst_id());
         ps.executeUpdate();
+    }
+
+    public static InstitutionDaoImplementation getInstance() {
+        if (instInstance == null) {
+            instInstance = new InstitutionDaoImplementation();
+        }
+        return instInstance;
     }
 }

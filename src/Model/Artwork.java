@@ -10,7 +10,6 @@ public class Artwork {
     private String artStyle;
     private Integer inv_id;
     private Integer expo_id;
-    private Integer rent_id;
 
     public Artwork() {}
 
@@ -80,19 +79,11 @@ public class Artwork {
         this.art_id = art_id;
     }
 
-    public int getExpo_id() {
+    public Integer getExpo_id() {
         return expo_id;
     }
 
     public void setExpo_id(Integer expo_id) {
         this.expo_id = expo_id;
-    }
-
-    public int getRent_id() {
-        return rent_id;
-    }
-
-    public void setRent_id(Integer rent_id) {
-        this.rent_id = rent_id;
     }
 }

@@ -1,6 +1,5 @@
 package DB_Implementation;
 
-import Model.Artwork;
 import Model.Expositon;
 
 import java.sql.*;
@@ -8,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExpositionDaoImplementation {
+    private static ExpositionDaoImplementation expoInstance;
     static Connection con = null;
     static {
         try {
@@ -28,7 +28,7 @@ public class ExpositionDaoImplementation {
                 = con.prepareStatement(query);
         ps.setString(1, expo.getExpoName());
         ps.setString(2, expo.getExpoDescription());
-        ps.setBoolean(3, expo.getExpoCompleteStatus());
+        ps.setString(3, expo.getExpoStatus());
         ps.setDate(4, expo.getStartDate());
         ps.setDate(5, expo.getEndDate());
 
@@ -66,7 +66,7 @@ public class ExpositionDaoImplementation {
             expo.setExpo_id(rs.getInt("id"));
             expo.setExpoName(rs.getString("name"));
             expo.setExpoDescription(rs.getString("description"));
-            expo.setExpoCompleteStatus(rs.getBoolean("status"));
+            expo.setExpoStatus(rs.getString("status"));
             expo.setStartDate(rs.getDate("start_date"));
             expo.setEndDate(rs.getDate("end_date"));
         }
@@ -76,6 +76,24 @@ public class ExpositionDaoImplementation {
         }
         else
             return null;
+    }
+
+    public boolean getIsOnExpo(int id) throws SQLException {
+        String query = "select arts.id, arts.expo_id from arts where arts.expo_id != \"null\" && arts.id = ?";
+        PreparedStatement ps
+                = con.prepareStatement(query);
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        boolean check = false;
+
+        while (rs.next()) {
+            check = true;
+        }
+        if (check == true) {
+            return true;
+        }
+        else
+            return false;
     }
 
     public List<Expositon> getExposition()
@@ -92,14 +110,13 @@ public class ExpositionDaoImplementation {
             expo.setExpo_id(rs.getInt("id"));
             expo.setExpoName(rs.getString("name"));
             expo.setExpoDescription(rs.getString("description"));
-            expo.setExpoCompleteStatus(rs.getBoolean("status"));
+            expo.setExpoStatus(rs.getString("status"));
             expo.setStartDate(rs.getDate("start_date"));
             expo.setEndDate(rs.getDate("end_date"));
             ls.add(expo);
         }
         return ls;
     }
-
     public void update(Expositon expo)
             throws SQLException
     {
@@ -111,10 +128,17 @@ public class ExpositionDaoImplementation {
                 = con.prepareStatement(query);
         ps.setString(1, expo.getExpoName());
         ps.setString(2, expo.getExpoDescription());
-        ps.setBoolean(3, expo.getExpoCompleteStatus());
+        ps.setString(3, expo.getExpoStatus());
         ps.setDate(4, expo.getStartDate());
         ps.setDate(5, expo.getEndDate());
         ps.setInt(6, expo.getExpo_id());
         ps.executeUpdate();
+    }
+
+    public static ExpositionDaoImplementation getInstance() {
+        if (expoInstance == null) {
+            expoInstance = new ExpositionDaoImplementation();
+        }
+        return expoInstance;
     }
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArtworkDaoImplementation {
-
+    private static ArtworkDaoImplementation artInstance;
     static Connection con = null;
     static {
         try {
@@ -24,7 +24,7 @@ public class ArtworkDaoImplementation {
             throws SQLException
     {
         String query
-                = "insert into arts(name, " + "description, " + "author, " + "acquisition_year, " + "art_style, " + "rent_id) VALUES (?, ?, ?, ?, ?, ?)";
+                = "insert into arts(name, " + "description, " + "author, " + "acquisition_year, " + "art_style, " + "inv_id, " + "expo_id ) VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps
                 = con.prepareStatement(query);
         ps.setString(1, artwork.getName());
@@ -32,14 +32,15 @@ public class ArtworkDaoImplementation {
         ps.setString(3, artwork.getAuthor());
         ps.setInt(4, artwork.getAcquisitionYear());
         ps.setString(5, artwork.getArtStyle());
-        ps.setInt(6, artwork.getRent_id()   );
-        //ps.setInt(7, artwork.getExpo_id());
-        //ps.setInt(8, artwork.getRent_id());
-
+        ps.setInt(6, artwork.getInv_id());
+        if (artwork.getExpo_id() != null) {
+            ps.setInt(7, artwork.getExpo_id());
+        } else {
+            ps.setNull(7, Types.INTEGER);
+        }
         int n = ps.executeUpdate();
         return n;
     }
-
     public void delete(int id)
             throws SQLException
     {
@@ -50,7 +51,6 @@ public class ArtworkDaoImplementation {
         ps.setInt(1, id);
         ps.executeUpdate();
     }
-
     public Artwork getArtwork(int id)
             throws SQLException
     {
@@ -75,7 +75,6 @@ public class ArtworkDaoImplementation {
             art.setArtStyle(rs.getString("art_style"));
             art.setInv_id(rs.getInt("inv_id"));
             art.setExpo_id(rs.getInt("expo_id"));
-            art.setRent_id(rs.getInt("rent_id"));
         }
 
         if (check == true) {
@@ -84,7 +83,6 @@ public class ArtworkDaoImplementation {
         else
             return null;
     }
-
     public List<Artwork> getArtwork()
             throws SQLException
     {
@@ -104,12 +102,53 @@ public class ArtworkDaoImplementation {
             art.setArtStyle(rs.getString("art_style"));
             art.setInv_id(rs.getInt("inv_id"));
             art.setExpo_id(rs.getInt("expo_id"));
-            art.setRent_id(rs.getInt("rent_id"));
             ls.add(art);
         }
         return ls;
     }
+    public List<Artwork> getArtForExpo()
+            throws SQLException {
+        String query = "select * from arts where inv_id != \"null\";";
+        PreparedStatement ps
+                = con.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        List<Artwork> ls = new ArrayList();
 
+
+
+        while (rs.next()) {
+            Artwork art = new Artwork();
+            art.setArt_id(rs.getInt("id"));
+            art.setName(rs.getString("name"));
+            art.setDescription(rs.getString("description"));
+            art.setAuthor(rs.getString("author"));
+            art.setAcquisitionYear(rs.getInt("acquisition_year"));
+            art.setArtStyle(rs.getString("art_style"));
+            art.setInv_id(rs.getInt("inv_id"));
+            art.setExpo_id(rs.getInt("expo_id"));
+            ls.add(art);
+        }
+        return ls;
+    }
+    public void updateArtToExpo(int artID, int expoID)
+            throws SQLException {
+        String query
+                = "update arts set inv_id = null, expo_id =? where id =?;";
+        PreparedStatement ps
+                = con.prepareStatement(query);
+        ps.setInt(1, expoID);
+        ps.setInt(2, artID);
+        ps.executeUpdate();
+    }
+    public void updateArtToInvFromExpo(int expoID)
+            throws  SQLException {
+        String query
+                = "update arts set inv_id = 1, expo_id = null where expo_id =?;";
+        PreparedStatement ps
+                = con.prepareStatement(query);
+        ps.setInt(1, expoID);
+        ps.executeUpdate();
+    }
     public void update(Artwork art)
             throws SQLException
     {
@@ -126,8 +165,14 @@ public class ArtworkDaoImplementation {
         ps.setString(5, art.getArtStyle());
         ps.setInt(6, art.getInv_id());
         ps.setInt(7, art.getExpo_id());
-        ps.setInt(8, art.getRent_id());
         ps.setInt(9, art.getArt_id());
         ps.executeUpdate();
+    }
+
+    public static ArtworkDaoImplementation getInstance() {
+        if (artInstance == null) {
+            artInstance = new ArtworkDaoImplementation();
+        }
+        return artInstance;
     }
 }

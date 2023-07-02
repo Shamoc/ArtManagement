@@ -6,6 +6,12 @@ public class Institution {
     private String instName;
     private String instAddress;
 
+    public Institution() {}
+    public Institution(String instName, String instAddress) {
+        this.instName = instName;
+        this.instAddress = instAddress;
+    }
+
     public String getInstName() {
         return instName;
     }
