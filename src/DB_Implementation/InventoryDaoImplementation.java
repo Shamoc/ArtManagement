@@ -1,5 +1,6 @@
 package DB_Implementation;
 
+import Model.Artwork;
 import Model.Institution;
 import Model.Inventory;
 
@@ -73,6 +74,50 @@ public class InventoryDaoImplementation {
             return null;
     }
 
+    public boolean inventoryNameFlag(String name)
+            throws SQLException
+    {
+        String query
+                = "select * from inventory where name=?;";
+        PreparedStatement ps
+                = con.prepareStatement(query);
+
+        ps.setString(1, name);
+        ResultSet rs = ps.executeQuery();
+        boolean check = false;
+
+        while (rs.next()) {
+            check = true;
+        }
+
+        if (check == true) {
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public boolean inventoryHasArtworkFlag(int id)
+            throws SQLException {
+        String query
+                = "select * from arts where inv_id = ?;";
+        PreparedStatement ps
+                = con.prepareStatement(query);
+
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        boolean check = false;
+
+        while (rs.next()) {
+            check = true;
+        }
+
+        if (check == true) {
+            return true;
+        }
+        else
+            return false;
+    }
     public List<Inventory> getInventory()
             throws SQLException
     {
@@ -105,6 +150,34 @@ public class InventoryDaoImplementation {
         ps.setString(2, inv.getInventoryAddress());
         ps.setInt(3, inv.getInv_id());
         ps.executeUpdate();
+    }
+
+    public void updateArtInvID(int invID, int artID)
+            throws SQLException {
+        String query
+                = "update arts set inv_id = ? where id =?;";
+        PreparedStatement ps
+                = con.prepareStatement(query);
+        ps.setInt(1, invID);
+        ps.setInt(2, artID);
+        ps.executeUpdate();
+    }
+    public List<Artwork> getArtInInventory(int id)
+            throws SQLException {
+        String query = "select arts.id, arts.name from arts inner join inventory on inv_id = inventory.id where inv_id =?;";
+        PreparedStatement ps
+                = con.prepareStatement(query);
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        List<Artwork> ls = new ArrayList();
+
+        while (rs.next()) {
+            Artwork art = new Artwork();
+            art.setArt_id(rs.getInt("id"));
+            art.setName(rs.getString("name"));
+            ls.add(art);
+        }
+        return ls;
     }
 
     public static InventoryDaoImplementation getInstance() {

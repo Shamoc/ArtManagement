@@ -2,11 +2,15 @@ package Controller;
 
 import DB_Implementation.InstitutionDaoImplementation;
 import Model.Institution;
+import Model.Rental;
 
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import static java.awt.event.KeyEvent.KEY_PRESSED;
+import static java.awt.event.KeyEvent.VK_ESCAPE;
 
 public class InstitutionController {
     private static InstitutionController instListInstance;
@@ -17,7 +21,8 @@ public class InstitutionController {
      * Constructor for InstitutionController
      *
      */
-    private InstitutionController() throws SQLException {
+    private InstitutionController()
+            throws SQLException {
         instDao = InstitutionDaoImplementation.getInstance();
         instList = instDao.getInstitution();
     }
@@ -41,7 +46,8 @@ public class InstitutionController {
     /**
          * Method to print all the Institutes in instituteList
          */
-    public void showInstitutes() throws SQLException {
+    public void showInstitutes()
+            throws SQLException {
             if (!instDao.getInstitution().isEmpty()) {
                 int index = 1;
                 for (Institution inst : instDao.getInstitution()) {
@@ -52,12 +58,8 @@ public class InstitutionController {
                 System.out.println("Institutions List is empty");
             }
         }
-
-    /**
-     *
-     */
-
-    public List<Institution> showRentedInstitutions() throws SQLException {
+    public List<Institution> showRentedInstitutions()
+            throws SQLException {
         List<Institution> instList = instDao.rentedInstitutions();
         int index = 1;
         for (Institution inst : instList){
@@ -87,20 +89,26 @@ public class InstitutionController {
     }
 
     /**
-     * Method to delete an Institute and remove it from instituteList
+     * Method to delete an Institute from the database
      *
      */
-    public void deleteInstitute() throws SQLException {
+    public void deleteInstitute()
+            throws SQLException {
         Scanner scanner = new Scanner(System.in);
         if (!instList.isEmpty()) {
-            System.out.println("Institute to delete: ");
             showInstitutes();
-            String instName = scanner.next();
-            if (instList.contains(instName)) {
-                instList.remove(instName);
-                System.out.println("Success! Institute " + instName.toLowerCase() + " was deleted");
+            System.out.println("Institute to delete: ");
+            int userInst = scanner.nextInt();
+            Institution inst = instList.get(userInst - 1);
+            if (inst != null) {
+                List<Rental> activeRentals = instDao.getActiveRentByInstitution(inst.getInst_id());
+                if (activeRentals.isEmpty()) {
+                    System.out.println("Success! Institute " + inst.getInstName() + " has been deleted");
+                } else {
+                    System.out.println("There is an unpaid/pending rental for this Institution. \n Can not be deleted.");
+                }
             } else {
-                System.out.println("Exposition not found. Please type the exact name");
+                System.out.println("Institution not found.");
                 deleteInstitute();
             }
         } else {

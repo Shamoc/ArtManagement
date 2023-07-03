@@ -12,6 +12,11 @@ public class Rental {
 
     public Rental() {}
 
+    public Rental(String rentalStatus, int inst_id) {
+        this.rentalStatus = rentalStatus;
+        this.inst_id = inst_id;
+    }
+
     /**
      * Constructor method for Rental Class
      *

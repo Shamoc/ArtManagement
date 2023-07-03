@@ -57,7 +57,7 @@ public class Main {
                         artInstance.createArtwork();
                         break;
                     case 3:
-                        //artInstance.deleteArtwork();
+                        artInstance.deleteArtwork();
                         break;
                     case 4:
                         mainMenu();
@@ -75,8 +75,8 @@ public class Main {
             while (!done) {
                 InventoryController invInstance = InventoryController.getInstance();
                 Scanner scanner = new Scanner(System.in);
-                System.out.println("Inventory Options: \n 1. Create Inventory \n 2. Inventory details \n 3.  " +
-                        "\n 4. " + "\n 5.  \n 6. Go back");
+                System.out.println("Inventory Options: \n 1. Create Inventory \n 2. Inventory details \n 3. Set Artwork to an Inventory  " +
+                        "\n 4. Artwork in Inventory " + "\n 5. Delete Inventory  \n 6. Go back");
                 int usrartnum = scanner.nextInt();
                 switch (usrartnum) {
                     case 1:
@@ -86,13 +86,13 @@ public class Main {
                         invInstance.inventoryDetails();
                         break;
                     case 3:
-                       // invInstance.setArtworkInventory();
+                        invInstance.setArtworkInventory();
                         break;
                     case 4:
-                       // invInstance.createInventory();
+                        invInstance.artworkInInventory();
                         break;
                     case 5:
-                       // invInstance.deleteInventory();
+                        invInstance.deleteInventory();
                         break;
                     case 6:
                         mainMenu();
@@ -112,7 +112,7 @@ public class Main {
                 RentalController rentInstance = RentalController.getInstance();
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("Rent Options: \n 1. Create Institution \n 2. Create Rent \n 3. Institution details " +
-                        "\n 4. Rental details  \n 5. Prueba  \n 6.  \n 7.  \n 8. Go back");
+                        "\n 4. Rental details  \n 5.  \n 6.  \n 7. Delete Institution  \n 8. Go back");
                 int usrartnum = scanner.nextInt();
                 switch (usrartnum) {
                     case 1:
@@ -134,10 +134,7 @@ public class Main {
                        // rentInstance.rentedPrice();
                         break;
                     case 7:
-                       /* rentInstance.showInstitutes();
-                        System.out.println("Select Institute");
-                        String invName = scanner.next();
-                        invInstance.artworkInInventory(invName); */
+                        instInstance.deleteInstitute();
                         break;
                     case 8:
                         mainMenu();
@@ -156,7 +153,7 @@ public class Main {
                 ExpositionController expoInstance = ExpositionController.getInstance();
                 InventoryController invInstance = InventoryController.getInstance();
                 Scanner scanner = new Scanner(System.in);
-                System.out.println("Exposition Options: \n 1. Create Exposition \n 2. Exposition Details \n 3. Set Artwork for Expo  \n 4. Delete Exposition  \n 5.  \n 6.  \n 7. Go back");
+                System.out.println("Exposition Options: \n 1. Create Exposition \n 2. Exposition Details \n 3. Set Artwork for Expo  \n 4. Show Art on Exposition \n 5. Delete Exposition  \n 6. Go back");
                 int usrartnum = scanner.nextInt();
                 switch (usrartnum) {
                     case 1:
@@ -169,14 +166,12 @@ public class Main {
                         expoInstance.setArtworkExposition();
                         break;
                     case 4:
-                        expoInstance.deleteExpo();
+                        expoInstance.showArtOnExpo();
                         break;
                     case 5:
-                       // expoInstance.checkExpoStatus();
+                        expoInstance.deleteExpo();
                         break;
                     case 6:
-                        break;
-                    case 7:
                         mainMenu();
                         break;
                     default:
@@ -210,7 +205,7 @@ public class Main {
             Artwork artwork = new Artwork("Ron5", "Da error5", "Pixar5", 2025, "Barroco5", 1);
             artDao.add(artwork); */
 
-            expoMenu();
+            invMenu();
 
     }
 }

@@ -1,5 +1,6 @@
 package DB_Implementation;
 
+import Model.Artwork;
 import Model.Expositon;
 
 import java.sql.*;
@@ -35,7 +36,6 @@ public class ExpositionDaoImplementation {
         int n = ps.executeUpdate();
         return n;
     }
-
     public void delete(int id)
             throws SQLException
     {
@@ -46,7 +46,6 @@ public class ExpositionDaoImplementation {
         ps.setInt(1, id);
         ps.executeUpdate();
     }
-
     public Expositon getExposition(int id)
             throws SQLException
     {
@@ -77,8 +76,8 @@ public class ExpositionDaoImplementation {
         else
             return null;
     }
-
-    public boolean getIsOnExpo(int id) throws SQLException {
+    public boolean getIsOnExpo(int id)
+            throws SQLException {
         String query = "select arts.id, arts.expo_id from arts where arts.expo_id != \"null\" && arts.id = ?";
         PreparedStatement ps
                 = con.prepareStatement(query);
@@ -95,7 +94,6 @@ public class ExpositionDaoImplementation {
         else
             return false;
     }
-
     public List<Expositon> getExposition()
             throws SQLException
     {
@@ -134,7 +132,24 @@ public class ExpositionDaoImplementation {
         ps.setInt(6, expo.getExpo_id());
         ps.executeUpdate();
     }
+    public List<Artwork> getArtOnExpo(int id)
+            throws SQLException {
+        String query = "select arts.id, arts.name from arts inner join expo on expo.id = expo_id where expo_id =?;";
+        PreparedStatement ps
+                = con.prepareStatement(query);
 
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        List<Artwork> ls = new ArrayList();
+
+        while (rs.next()) {
+            Artwork art = new Artwork();
+            art.setArt_id(rs.getInt("id"));
+            art.setName(rs.getString("name"));
+            ls.add(art);
+        }
+        return ls;
+    }
     public static ExpositionDaoImplementation getInstance() {
         if (expoInstance == null) {
             expoInstance = new ExpositionDaoImplementation();

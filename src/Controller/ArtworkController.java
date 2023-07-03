@@ -2,19 +2,13 @@ package Controller;
 
 import DB_Implementation.ArtworkDaoImplementation;
 import Model.Artwork;
-import Utils.Utils;
 
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 
 public class ArtworkController {
     private List<Artwork> artworkList;
-    private static RentalController instituteListInstance;
-    private static ExpositionController expoListInstance;
     private static ArtworkDaoImplementation artDao;
 
     private static ArtworkController artworkListInstance = null;
@@ -84,39 +78,28 @@ public class ArtworkController {
     }
 
     /**
-     * Method for the removal of an Artwork from the artworkList
+     * Method to delete an Artwork from the Database
      */
     public void deleteArtwork() throws SQLException {
-       /* Scanner scanner = new Scanner(System.in);
-        instituteListInstance = RentalController.getInstance();
-        expoListInstance = ExpositionController.getInstance();
+       Scanner scanner = new Scanner(System.in);
         if (!artworkList.isEmpty()) {
-            //  showArtworks();
-            System.out.println("Artwork name to delete: ");
+            showArtworks();
+            System.out.println("Artwork to delete: ");
             int artName = scanner.nextInt();
-            Artwork artWork = artworkList.get(artName);
-            if (artworkList.contains(artWork)) {
-                if (!expoListInstance.onActiveExpo(artWork)) {
-                  /*  boolean isOnRent = instituteListInstance.isOnRent(); // TO DO
-                    boolean isRentPaid = isOnRent ? instituteListInstance.isRentPaid(artWork) : true;
-                    if (isRentPaid) {
-                        artworkList.remove(artName);
+            Artwork artwork = artworkList.get(artName - 1);
+            if (artwork != null) {
+                if (artwork.getInv_id() > 0) {
+                        artDao.delete(artwork.getArt_id());
                         System.out.println("Success! Artwork " + artName + " deleted.");
                     } else {
-                        System.out.println("Can not delete an Artwork while is being rented.");
+                        System.out.println("Artwork needs to be in an Inventory to be deleted");
                     }
-                } else {
-                    System.out.println("Can not delete an Artwork while it is in an exposition.");
-                }
             } else {
                 System.out.println("Artwork not found");
             }
         } else {
             System.out.println("Empty List");
         }
-                }
-            }
-        } */
     }
 
     /**

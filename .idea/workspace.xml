@@ -4,30 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b80c5ef-9b46-474b-a863-f01f3f3b6efb" name="Changes" comment="Created method instListContains">
+    <list default="true" id="4b80c5ef-9b46-474b-a863-f01f3f3b6efb" name="Changes" comment="ExpositionController methods update for DB integration completed.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/ArtworkController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/ArtworkController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Controller/ArtworkController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/ExpositionController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Controller/ExpositionController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/InventoryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Controller/InventoryController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/RentController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Controller/RentalController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Controller/RentalController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Model/ArtWork.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Model/ArtWork.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Model/Expositon.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Model/Expositon.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ArtManagement/Model/Rental.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ArtManagement/Model/Rental.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ArtworkController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ArtworkController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ExpositionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExpositionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/InstitutionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/InstitutionController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/InventoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/InventoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/RentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/InstitutionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/RentalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RentalController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DB_Implementation/ArtworkDaoImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DB_Implementation/ArtworkDaoImplementation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DB_Implementation/ExpositionDaoImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DB_Implementation/ExpositionDaoImplementation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DB_Implementation/InstitutionDaoImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DB_Implementation/InstitutionDaoImplementation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DB_Implementation/InventoryDaoImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DB_Implementation/InventoryDaoImplementation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DB_Implementation/RentalDaoImplementation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DB_Implementation/RentalDaoImplementation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Artwork.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Artwork.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Expositon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Expositon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Institution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Institution.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Rental.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Rental.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -269,7 +263,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686685987896</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="ExpositionController methods update for DB integration completed.">
+      <created>1688340177491</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1688340177491</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -316,7 +317,9 @@
     <MESSAGE value="Updated updateExpoStatus method.&#10;Updated checkExpoStatus method." />
     <MESSAGE value="DAO implementation for all models." />
     <MESSAGE value="ShowArtworks/Inventory/Institutions/Expositions updated for SQLImplementation. &#10;artwork/inventoryDetails updated for SQLImplementation.&#10;instDetails method created." />
-    <option name="LAST_COMMIT_MESSAGE" value="ShowArtworks/Inventory/Institutions/Expositions updated for SQLImplementation. &#10;artwork/inventoryDetails updated for SQLImplementation.&#10;instDetails method created." />
+    <MESSAGE value="ExpositionController method update for DB integration completed." />
+    <MESSAGE value="ExpositionController methods update for DB integration completed." />
+    <option name="LAST_COMMIT_MESSAGE" value="ExpositionController methods update for DB integration completed." />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

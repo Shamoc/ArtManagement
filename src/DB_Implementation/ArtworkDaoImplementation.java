@@ -106,7 +106,7 @@ public class ArtworkDaoImplementation {
         }
         return ls;
     }
-    public List<Artwork> getArtForExpo()
+    public List<Artwork> getArtInInventory()
             throws SQLException {
         String query = "select * from arts where inv_id != \"null\";";
         PreparedStatement ps

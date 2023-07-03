@@ -1,7 +1,7 @@
 package DB_Implementation;
 
-import Model.Expositon;
 import Model.Institution;
+import Model.Rental;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -109,6 +109,26 @@ public class InstitutionDaoImplementation {
             inst.setInstAddress(rs.getString("address"));
             ls.add(inst);
         }
+        return ls;
+    }
+
+    public List<Rental> getActiveRentByInstitution(int id)
+            throws SQLException {
+        String query = "select rent.id, rent.status, institution.id from rent inner join institution on inst_id = institution.id where rent.status != \"paid\" && institution.id =?;";
+        PreparedStatement ps
+                = con.prepareStatement(query);
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        List<Rental> ls = new ArrayList();
+
+        while (rs.next()) {
+            Rental rent = new Rental();
+            rent.setRentalStatus(rs.getString("status"));
+            rent.setInst_id(rs.getInt("id"));
+
+            ls.add(rent);
+        }
+
         return ls;
     }
 

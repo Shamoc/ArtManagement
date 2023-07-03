@@ -26,7 +26,7 @@ public class ExpositionController {
         artDao = ArtworkDaoImplementation.getInstance();
         expoDao = ExpositionDaoImplementation.getInstance();
         artInstance = ArtworkController.getInstance();
-        artworkList = artDao.getArtForExpo();
+        artworkList = artDao.getArtInInventory();
         this.expoList = expoDao.getExposition();
         Expositon expositon = new Expositon("exhibition","World Fair");
         String dateEn =  "2010/12/5";
@@ -53,7 +53,7 @@ public class ExpositionController {
     public void setArtworkExposition() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         showArtForExpo();
-        List<Artwork> artsList = artDao.getArtForExpo();
+        List<Artwork> artsList = artDao.getArtInInventory();
         System.out.println("Select Artwork: ");
         int artworkID = scanner.nextInt();
         Artwork artWork = artsList.get(artworkID - 1);
@@ -295,7 +295,7 @@ public class ExpositionController {
     public void showArtForExpo() throws SQLException {
         if (!artworkList.isEmpty()) {
             int index = 1;
-            for (Artwork artworks : artDao.getArtForExpo()) {
+            for (Artwork artworks : artDao.getArtInInventory()) {
                 System.out.println(index + ". " + artworks.getName());
                 index++;
             }
@@ -303,4 +303,24 @@ public class ExpositionController {
             System.out.println("Empty List");
         }
     }
+
+    public void showArtOnExpo() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Select Exposition: ");
+        showExpositions();
+        int option = scanner.nextInt();
+        Expositon expo = expoList.get(option - 1);
+        List<Artwork> artList = expoDao.getArtOnExpo(expo.getExpo_id());
+        if (!artList.isEmpty()) {
+            int index = 1;
+            for (Artwork artworks : artList) {
+                System.out.println(index + ". " + artworks.getName());
+                index++;
+            }
+        } else {
+            System.out.println("Empty List");
+        }
+    }
+
+
 }

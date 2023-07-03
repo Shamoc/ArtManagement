@@ -13,6 +13,10 @@ public class Artwork {
 
     public Artwork() {}
 
+    public Artwork(int art_id, String name) {
+        this.art_id = art_id;
+        this.name = name;
+    }
     public Artwork(String name, String description, String author, int acquisitionYear, String artStyle, int inv_id) {
         this.setName(name);
         this.description = description;
