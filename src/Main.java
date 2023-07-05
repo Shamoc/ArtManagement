@@ -1,6 +1,8 @@
 import Controller.*;
 import DB_Implementation.ArtworkDaoImplementation;
+import DB_Implementation.ExpositionDaoImplementation;
 import Model.Artwork;
+import Model.Expositon;
 
 import java.sql.*;
 import java.util.*;
@@ -11,7 +13,8 @@ public class Main {
      * Method for the Main Menu
      */
     public static void mainMenu() throws SQLException {
-
+            ExpositionController expoInst = ExpositionController.getInstance();
+            expoInst.updateExpoList();
             boolean done = false;
             while (!done) {
                 System.out.println("Welcome to ArtCo. Your Art professional manager");
@@ -112,31 +115,28 @@ public class Main {
                 RentalController rentInstance = RentalController.getInstance();
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("Rent Options: \n 1. Create Institution \n 2. Create Rent \n 3. Institution details " +
-                        "\n 4. Rental details  \n 5.  \n 6.  \n 7. Delete Institution  \n 8. Go back");
+                        "\n 4. Rental details  \n 5. Pay Rental  \n 6. Delete Institution \n 7. Go back");
                 int usrartnum = scanner.nextInt();
                 switch (usrartnum) {
                     case 1:
                         instInstance.createInstitute();
                         break;
                     case 2:
-                       rentInstance.createRental();
+                        rentInstance.createRental();
                         break;
                     case 3:
-                       instInstance.instDetails();
+                        instInstance.instDetails();
                         break;
                     case 4:
-                       rentInstance.rentDetails();
+                        rentInstance.rentDetails();
                         break;
                     case 5:
-                       //rentInstance.isOnRent();
+                        rentInstance.payRental();
                         break;
                     case 6:
-                       // rentInstance.rentedPrice();
-                        break;
-                    case 7:
                         instInstance.deleteInstitute();
                         break;
-                    case 8:
+                    case 7:
                         mainMenu();
                         break;
                     default:
@@ -201,11 +201,8 @@ public class Main {
             catch (Exception exception) {
                 System.out.println(exception);
             }
-          /*  ArtworkDaoImplementation artDao = new ArtworkDaoImplementation();
-            Artwork artwork = new Artwork("Ron5", "Da error5", "Pixar5", 2025, "Barroco5", 1);
-            artDao.add(artwork); */
 
-            invMenu();
+            mainMenu();
 
     }
 }

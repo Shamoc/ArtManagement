@@ -12,10 +12,7 @@ import java.util.*;
 
 public class ExpositionController {
 
-    private List<Expositon> expoList;
     private static ExpositionController expoInstance;
-    private static ArtworkController artInstance;
-    private List<Artwork> artworkList;
     private static ArtworkDaoImplementation artDao;
     private static ExpositionDaoImplementation expoDao;
 
@@ -25,9 +22,6 @@ public class ExpositionController {
     private ExpositionController() throws SQLException {
         artDao = ArtworkDaoImplementation.getInstance();
         expoDao = ExpositionDaoImplementation.getInstance();
-        artInstance = ArtworkController.getInstance();
-        artworkList = artDao.getArtInInventory();
-        this.expoList = expoDao.getExposition();
         Expositon expositon = new Expositon("exhibition","World Fair");
         String dateEn =  "2010/12/5";
         String dateSt = "2000/1/5";
@@ -48,12 +42,11 @@ public class ExpositionController {
     /**
      * Method to set an Artwork to an Exposition
      *
-     * @see #artInstance
      */
     public void setArtworkExposition() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         showArtForExpo();
-        List<Artwork> artsList = artDao.getArtInInventory();
+        List<Artwork> artsList = artDao.getArtInInventories();
         System.out.println("Select Artwork: ");
         int artworkID = scanner.nextInt();
         Artwork artWork = artsList.get(artworkID - 1);
@@ -61,6 +54,7 @@ public class ExpositionController {
             showExpositions();
             System.out.println("Select Exposition: ");
             int userExpo = scanner.nextInt();
+            List<Expositon> expoList = expoDao.getExposition();
             Expositon expo = expoList.get(userExpo - 1);
             if (expo != null) {
                 updateExpoStatus(expo);
@@ -85,7 +79,8 @@ public class ExpositionController {
         System.out.println("Exposition description: ");
         String expoDes = scanner.next();
         Expositon expositon = new Expositon(expoName, expoDes);
-        if (!expoList.contains(expositon)) {
+        List<Expositon> expoList = expoDao.getExposition();
+        if (expositon != null) {
             boolean done = false;
             while (!done) {
                 System.out.println("Select STARTING DATE");
@@ -142,6 +137,7 @@ public class ExpositionController {
      */
     public void deleteExpo() throws SQLException {
         Scanner scanner = new Scanner(System.in);
+        List<Expositon> expoList = expoDao.getExposition();
         if (!expoList.isEmpty()) {
             showExpositions();
             System.out.println("Exposition to delete: ");
@@ -177,14 +173,6 @@ public class ExpositionController {
             }
         }
         return expoInstance;
-    }
-
-    /**
-     * Method to access the expoList
-     * @return expoList
-     */
-    public List<Expositon> getExpoList() {
-        return expoList;
     }
 
     /**
@@ -288,14 +276,28 @@ public class ExpositionController {
     }
 
     /**
+     * Method to update all the Expostions Status according to current date.
+     *
+     * @throws SQLException
+     */
+    public void updateExpoList()
+            throws SQLException {
+        List<Expositon> expoList = expoDao.getExposition();
+        for (Expositon expo : expoList) {
+            updateExpoStatus(expo);
+        }
+    }
+
+    /**
      * Method to print all the Artwork available for Exposition
      *
      * @throws SQLException
      */
     public void showArtForExpo() throws SQLException {
+        List<Artwork> artworkList = artDao.getArtInInventories();
         if (!artworkList.isEmpty()) {
             int index = 1;
-            for (Artwork artworks : artDao.getArtInInventory()) {
+            for (Artwork artworks : artDao.getArtInInventories()) {
                 System.out.println(index + ". " + artworks.getName());
                 index++;
             }
@@ -309,6 +311,7 @@ public class ExpositionController {
         System.out.println("Select Exposition: ");
         showExpositions();
         int option = scanner.nextInt();
+        List<Expositon> expoList = expoDao.getExposition();
         Expositon expo = expoList.get(option - 1);
         List<Artwork> artList = expoDao.getArtOnExpo(expo.getExpo_id());
         if (!artList.isEmpty()) {

@@ -80,7 +80,8 @@ public class RentalDaoImplementation {
             return null;
     }
 
-    public List<Rental> getRentsByInstitution(int id) throws SQLException {
+    public List<Rental> getRentsByInstitution(int id)
+            throws SQLException {
 
         String query = "select rent.price, rent.status, rent.pending_rent, rent.art_id from rent where rent.inst_id = ?;";
         PreparedStatement ps
@@ -101,7 +102,30 @@ public class RentalDaoImplementation {
         return ls;
     }
 
-    public boolean getIsOnRentArt(int id) throws SQLException {
+    public List<Rental> getRentToPay(int id)
+            throws SQLException {
+
+        String query = "select rent.price, rent.status, rent.pending_rent, rent.art_id from rent where rent.inst_id = ? && status != \"paid\";";
+        PreparedStatement ps
+                = con.prepareStatement(query);
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        List<Rental> ls = new ArrayList();
+
+        while (rs.next()) {
+            Rental rent = new Rental();
+            rent.setRentalPrice(rs.getInt("price"));
+            rent.setRentalStatus(rs.getString("status"));
+            rent.setPendingRental(rs.getInt("pending_rent"));
+            rent.setArt_id(rs.getInt("art_id"));
+            ls.add(rent);
+        }
+
+        return ls;
+    }
+
+    public boolean getIsOnRentArt(int id)
+            throws SQLException {
         String query = "select rent.status, rent.art_id from rent where rent.status != \"paid\" && rent.art_id = ?;";
         PreparedStatement ps
                 = con.prepareStatement(query);
@@ -141,6 +165,15 @@ public class RentalDaoImplementation {
         return ls;
     }
 
+    public void updateRentStatusPendingRent(int id)
+            throws SQLException {
+        String query
+                = "update rent set status = \"paid\", pending_rent = 0 where id = ?;";
+        PreparedStatement ps
+                = con.prepareStatement(query);
+        ps.setInt(1, id);
+        ps.executeUpdate();
+    }
     public void update(Rental rent)
             throws SQLException
     {

@@ -18,9 +18,8 @@ public class RentalController {
     private static RentalController rentInstance;
     private static ArtworkController artworkInstance;
     private static InstitutionController instInstance;
+    private static InventoryController invInstance;
     private static ArtworkDaoImplementation artDao;
-    private List<Artwork> artworkList;
-    private List<Institution> instList;
     private RentalDaoImplementation rentDao;
     private InstitutionDaoImplementation instDao;
     private ExpositionDaoImplementation expoDao;
@@ -30,33 +29,37 @@ public class RentalController {
      *
      * @see #artworkInstance
      */
-    private RentalController() throws SQLException {
+    private RentalController()
+            throws SQLException {
         rentDao = RentalDaoImplementation.getInstance();
         instDao = InstitutionDaoImplementation.getInstance();
         artDao = ArtworkDaoImplementation.getInstance();
         expoDao = ExpositionDaoImplementation.getInstance();
+        invInstance = InventoryController.getInstance();
         artworkInstance = ArtworkController.getInstance();
-        artworkList = artworkInstance.getArtworkList();
         instInstance = InstitutionController.getInstance();
         this.rentList = rentDao.getRental();
-        this.instList = instDao.getInstitution();
     }
 
     /**
-     * Method to set a Rental
+     * Method to create a Rental
+     *
+     *
      */
-    public void createRental() throws SQLException {
+    public void createRental()
+            throws SQLException {
         Scanner scanner = new Scanner(System.in);
-        artworkInstance.showArtworks();
+        invInstance.showArtInInventories();
         System.out.println("Select Artwork: ");
         int artworkID = scanner.nextInt();
-        Artwork artwork = artworkList.get(artworkID - 1);
+        List <Artwork> artList = artDao.getArtInInventories();
+        Artwork artwork = artList.get(artworkID - 1);
         artworkID = artwork.getArt_id();
         if (artwork != null) {
             instInstance.showInstitutes();
             System.out.println("Select Institute: ");
             int selectedInst = scanner.nextInt();
-            Institution inst = instList.get(selectedInst - 1);
+            Institution inst = instDao.getInst(selectedInst - 1);
             if (inst != null) {
                 if (!rentDao.getIsOnRentArt(artworkID) && !expoDao.getIsOnExpo(artworkID)) {
                     Rental rental = new Rental(inst.getInstName(), inst.getInst_id(), artworkID);
@@ -74,33 +77,11 @@ public class RentalController {
     }
 
     /**
-     * Method to determine an institution rent status
+     * Method to print a Rent Details
      *
-     * @return The boolean flag of an Artwork rent status
      */
-    public void isOnRent() throws SQLException {
-    }
-
-    /**
-     * Method to determine if a Rent has been paid.
-     */
-    public boolean isRentPaid(Artwork artWork) {
-        if (artWork != null) {
-           /* String instContainsArt = artWork.getInv_id();
-            if (instContainsArt != null) {
-                Rental rental = instituteList.get(instContainsArt);
-                if (rental.getRentalStatus().equalsIgnoreCase("paid")) {
-                    return true;
-                }
-            }*/
-        }
-        return false;
-    }
-
-    /**
-     * Method to determine if an Artwork is being rented
-     */
-    public void rentDetails() throws SQLException {
+    public void rentDetails()
+            throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("RENT DETAILS");
         List<Institution> institutions = instInstance.showRentedInstitutions();
@@ -123,103 +104,37 @@ public class RentalController {
     }
 
     /**
-     * Method to change the rental status of an Institution
+     * Method to change Status and Pending Rent values of a Rent
+     *
+     *
      */
-    public void rentalChangeStatus() {
+    public void payRental()
+            throws SQLException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please select the Artwork: ");
-        //artworkControllerInstance.showArtworks();
-        int artworkID = scanner.nextInt();
-        Artwork artwork = artworkList.get(artworkID);
-       /* String artworkLocation = artwork.getInv_id();
-        if (artworkLocation != null) {
-            int artworkRentPrice = instituteList.get(artworkLocation).getPendingRental();
-            boolean done = false;
-            while (!done) {
-                System.out.println("Total pending rent debt is: ");
-                System.out.println(artworkRentPrice);
-                if (artworkRentPrice <= 0) {
-                    System.out.println("Rent has been fully paid");
-                    return;
-                }
-                System.out.println("Please select how much you want to pay from the following options: \n 1. Full Rent \n 2. Partial Payment");
-                int userChoice = scanner.nextInt();
-                switch (userChoice) {
-                    case 1:
-                        done = false;
-                        while (!done) {
-                            System.out.println("Please enter funds: ");
-                            int userMoney = scanner.nextInt();
-                            if (userMoney >= artworkRentPrice) {
-                                System.out.println("Your change is: " + (userMoney - artworkRentPrice));
-                                done = true;
-                            } else if (userMoney < artworkRentPrice) {
-                                System.out.println("Insufficient Payment. Please try again");
-                            }
-                        }
-                        System.out.println("Rent has been paid");
-                        instituteList.get(artworkLocation).setRentalStatus("paid");
-                        instituteList.get(artworkLocation).setPendingRental(0);
-                        done = true;
-                        break;
-                    case 2:
-                        done = false;
-                        int userPayment = 0;
-                        while (!done) {
-                            while (!done) {
-                                System.out.println("Please enter the amount to pay: \n Can not be full or more than debt.");
-                                userPayment = scanner.nextInt();
-                                if (userPayment >= artworkRentPrice) {
-                                    System.out.println("Please enter a valid amount. Try again");
-                                } else {
-                                    done = true;
-                                }
-                            }
-                            done = false;
-                            System.out.println("Please enter funds: ");
-                            int userMoney = scanner.nextInt();
-                            if (userMoney > userPayment) {
-                                System.out.println("Your change is: " + (userMoney - userPayment));
-                                done = true;
-                            } else if (userMoney < userPayment) {
-                                System.out.println("Insufficient Payment. Please try again");
-                            }
+        List<Institution> institutions = instInstance.showRentedInstitutions();
+        System.out.println("Please select an Institution: ");
+        int selectedRent = scanner.nextInt();
+        Institution inst = institutions.get(selectedRent - 1);
+        showRentsToPay(inst.getInst_id());
+        List <Rental> rentList = rentDao.getRentToPay(inst.getInst_id());
+        System.out.println("Please select a Rent: ");
+        int userRent = scanner.nextInt();
+        Rental rent = rentList.get(userRent - 1);
 
-                        }
-                        System.out.println("Rent has been paid");
-                        instituteList.get(artworkLocation).setRentalStatus("pending");
-                        int remainingDebt = artworkRentPrice - userPayment;
-                        instituteList.get(artworkLocation).setPendingRental(remainingDebt);
-                        done = true;
-                        break;
-                    default:
-                        System.out.println("That is not a valid option");
-                }
+        System.out.println("Please input amount to pay: \n NO CENTS");
+        int userMoney = scanner.nextInt();
+        int amountDue = rent.getPendingRental();
+        if (userMoney > 0 ){
+            if (userMoney >= amountDue) {
+                int change = amountDue - userMoney;
+                rentDao.updateRentStatusPendingRent(rent.getRent_id());
+                System.out.println("Success Rent has been paid. \n Your change is: " + change);
+            } else {
+                System.out.println("Insufficient payment");
             }
         } else {
-            System.out.println("Artwork not found. Please try again");
-            rentalChangeStatus();
-        } */
-    }
-
-    /**
-     * Method to print the defined rented prince of an Artwork
-     */
-    public void rentedPrice() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Please select the Artwork: ");
-        //artworkControllerInstance.showArtworks();
-        int artworkID = scanner.nextInt();
-        Artwork artwork = artworkList.get(artworkID);
-       /* String artworkLocation = artwork.getInv_id();
-        if (artworkLocation != null) {
-            System.out.println("Renting Institution: " + artworkLocation);
-            int artworkRentPrice = instituteList.get(artworkLocation).getRentalPrice();
-            System.out.println("Original rented price: " + artworkRentPrice);
-        } else {
-            System.out.println("Artwork not found. Please try again");
-            rentedPrice();
-        } */
+            System.out.println("Error. Please input an amount more than 0");
+        }
     }
 
     /**
@@ -239,12 +154,28 @@ public class RentalController {
     }
 
     /**
-     * Method to access instituteList
+     * Method to print all Unpaid/Pending Rents of a selected Institution
      *
-     * @return The instituteList
+     * @param id Institution ID
+     * @throws SQLException
      */
-    public List<Rental> getInstituteList() {
-        return rentList;
+    private void showRentsToPay(int id)
+            throws SQLException {
+        List<Rental> rentList = rentDao.getRentToPay(id);
+        if (!rentList.isEmpty()) {
+            int index = 1;
+            for (Rental rent : rentList) {
+                Artwork art = artDao.getArtwork(rent.getArt_id());
+                if (art != null) {
+                    System.out.println("Artwork: " + art.getName());
+                    System.out.println("Rent price: " + rent.getRentalPrice());
+                    System.out.println("Pending Rent: " + rent.getPendingRental());
+                }
+                index++;
+            }
+        } else {
+            System.out.println("Empty List");
+        }
     }
 
     /**
@@ -267,20 +198,5 @@ public class RentalController {
                 System.out.println("Error price can not be 0 or lower. \n Try again. ");
             }
         }
-    }
-
-    /**
-     * Method to determine if the instList contains an Institution name.
-     *
-     * @param inst
-     * @return
-     */
-    public boolean instListContains(Institution inst) {
-        for (Institution insti : instList) {
-            if (insti.getInstName().equalsIgnoreCase(inst.getInstName())) {
-                return true;
-            }
-        }
-        return false;
     }
 }

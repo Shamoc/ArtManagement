@@ -66,7 +66,7 @@ public class InventoryController {
         showArtInInventories();
         System.out.println("Select Artwork: ");
         int artworkID = scanner.nextInt();
-        List<Artwork> artList = artDao.getArtInInventory();
+        List<Artwork> artList = artDao.getArtInInventories();
         Artwork artwork = artList.get(artworkID - 1);
         if(artwork!=null) {
             System.out.println("Select destination: ");
@@ -129,7 +129,7 @@ public class InventoryController {
     public void deleteInventory() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         showInventories();
-        System.out.println("Inventory name to delete: ");
+        System.out.println("Inventory to delete: ");
         int userInv = scanner.nextInt();
         Inventory inventory = inventoryList.get(userInv - 1);
         if (inventory != null) {
@@ -190,9 +190,9 @@ public class InventoryController {
      * @throws SQLException
      */
     public void showArtInInventories() throws SQLException {
-        if (!artDao.getArtInInventory().isEmpty()) {
+        if (!artDao.getArtInInventories().isEmpty()) {
             int index = 1;
-            for (Artwork artwork : artDao.getArtInInventory()) {
+            for (Artwork artwork : artDao.getArtInInventories()) {
                 System.out.println(index + ". " + artwork.getName());
                 index++;
             }

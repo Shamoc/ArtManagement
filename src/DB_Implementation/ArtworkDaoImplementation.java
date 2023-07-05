@@ -106,15 +106,13 @@ public class ArtworkDaoImplementation {
         }
         return ls;
     }
-    public List<Artwork> getArtInInventory()
+    public List<Artwork> getArtInInventories()
             throws SQLException {
         String query = "select * from arts where inv_id != \"null\";";
         PreparedStatement ps
                 = con.prepareStatement(query);
         ResultSet rs = ps.executeQuery();
         List<Artwork> ls = new ArrayList();
-
-
 
         while (rs.next()) {
             Artwork art = new Artwork();

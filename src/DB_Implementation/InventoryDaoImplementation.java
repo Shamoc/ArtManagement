@@ -99,13 +99,7 @@ public class InventoryDaoImplementation {
 
     public boolean inventoryHasArtworkFlag(int id)
             throws SQLException {
-        String query
-                = "select * from arts where inv_id = ?;";
-        PreparedStatement ps
-                = con.prepareStatement(query);
-
-        ps.setInt(1, id);
-        ResultSet rs = ps.executeQuery();
+        ResultSet rs = queryArtInInventory(id);
         boolean check = false;
 
         while (rs.next()) {
@@ -162,13 +156,8 @@ public class InventoryDaoImplementation {
         ps.setInt(2, artID);
         ps.executeUpdate();
     }
-    public List<Artwork> getArtInInventory(int id)
-            throws SQLException {
-        String query = "select arts.id, arts.name from arts inner join inventory on inv_id = inventory.id where inv_id =?;";
-        PreparedStatement ps
-                = con.prepareStatement(query);
-        ps.setInt(1, id);
-        ResultSet rs = ps.executeQuery();
+    public List<Artwork> getArtInInventory(int id) throws SQLException {
+        ResultSet rs = queryArtInInventory(id);
         List<Artwork> ls = new ArrayList();
 
         while (rs.next()) {
@@ -178,6 +167,16 @@ public class InventoryDaoImplementation {
             ls.add(art);
         }
         return ls;
+    }
+
+    public ResultSet queryArtInInventory(int id)
+            throws SQLException {
+        String query = "select arts.id, arts.name from arts inner join inventory on inv_id = inventory.id where inv_id =?;";
+        PreparedStatement ps
+                = con.prepareStatement(query);
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        return rs;
     }
 
     public static InventoryDaoImplementation getInstance() {
