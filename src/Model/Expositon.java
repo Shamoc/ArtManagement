@@ -1,19 +1,21 @@
 package Model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Expositon {
 
+    private int expo_id;
     private String expoName;
     private String expoDescription;
-    private boolean expoCompleteStatus;
-    private Date startDate;
-    private Date endDate;
+    private String expoStatus;
+    private java.sql.Date startDate;
+    private java.sql.Date endDate;
 
+    public Expositon() {}
     public Expositon(String expoName, String expoDescription) {
         this.expoName = expoName;
         this.expoDescription = expoDescription;
-        this.setExpoCompleteStatus(expoCompleteStatus);
+        this.setExpoStatus(expoStatus);
     }
 
     public String getExpoName() {
@@ -32,27 +34,35 @@ public class Expositon {
         this.expoDescription = expoDescription;
     }
 
-    public Boolean getExpoCompleteStatus() {
-        return expoCompleteStatus;
+    public String getExpoStatus() {
+        return expoStatus;
     }
 
-    public void setExpoCompleteStatus(Boolean expoCompleteStatus) {
-        this.expoCompleteStatus = expoCompleteStatus;
+    public void setExpoStatus(String expoStatus) {
+        this.expoStatus = expoStatus;
     }
 
-    public Date getStartDate() {
+    public java.sql.Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(java.sql.Date startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public java.sql.Date getEndDate() {
         return endDate;
     }
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public int getExpo_id() {
+        return expo_id;
+    }
+
+    public void setExpo_id(int expo_id) {
+        this.expo_id = expo_id;
     }
 }
